@@ -5,7 +5,7 @@ scikit-learn
 numpy
 pydantic
 python-multipart
-pandas
 nltk
 PyPDF2
 python-docx
+spacy

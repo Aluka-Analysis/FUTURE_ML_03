@@ -10,10 +10,12 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 import base64
 import io
 import json
+import spacy
 
 # PDF and DOCX support
 try:
@@ -45,38 +47,103 @@ print("Loading model...")
 model = SentenceTransformer('all-MiniLM-L6-v2')
 print("Model loaded")
 
-# Default skill patterns (fallback if frontend doesn't send skills)
-DEFAULT_SKILL_PATTERNS = {
-    'python': r'\bpython\b',
-    'machine learning': r'\b(machine learning|ml)\b',
-    'tensorflow': r'\btensorflow\b',
-    'pytorch': r'\bpytorch\b',
-    'sql': r'\bsql\b',
-    'data analysis': r'\bdata analysis\b',
-    'excel': r'\bexcel\b',
-    'tableau': r'\btableau\b',
-    'aws': r'\baws\b',
-    'docker': r'\bdocker\b',
-    'kubernetes': r'\bkubernetes\b',
-    'communication': r'\bcommunication\b',
-    'leadership': r'\bleadership\b'
-}
+# ============================================================
+# PROFESSIONAL SKILL EXTRACTOR (No Hardcoded Lists)
+# ============================================================
 
-DEFAULT_SKILL_WEIGHTS = {
-    'python': 3, 'machine learning': 3, 'tensorflow': 3, 'pytorch': 3,
-    'sql': 2, 'data analysis': 2, 'tableau': 2, 'aws': 2, 'docker': 2, 'kubernetes': 2,
-    'excel': 1, 'communication': 1, 'leadership': 1
-}
+class SkillExtractor:
+    def __init__(self):
+        """Initialize skill extractor with NLP capabilities."""
+        try:
+            self.nlp = spacy.load("en_core_web_sm")
+            print("spaCy model loaded")
+        except:
+            import subprocess
+            subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+            self.nlp = spacy.load("en_core_web_sm")
+            print("spaCy model downloaded and loaded")
+    
+    def extract(self, text):
+        """Extract skills from job description using multiple NLP methods."""
+        skills = set()
+        text_lower = text.lower()
+        
+        # Method 1: Extract phrases after skill indicators
+        skill_indicators = [
+            'experience in', 'knowledge of', 'proficient in', 'skilled in',
+            'expertise in', 'familiar with', 'strong', 'hands-on', 'competent in',
+            'ability to', 'background in', 'trained in', 'certified in'
+        ]
+        
+        doc = self.nlp(text_lower)
+        
+        for indicator in skill_indicators:
+            if indicator in text_lower:
+                parts = text_lower.split(indicator)
+                for part in parts[1:]:
+                    # Extract up to next period or comma
+                    end_chars = ['.', ',', ';', 'and', 'or']
+                    extracted = part
+                    for end in end_chars:
+                        if end in extracted:
+                            extracted = extracted.split(end)[0]
+                            break
+                    # Split into potential skills
+                    potential = re.split(r',|\sand\s', extracted[:100])
+                    for skill in potential[:5]:
+                        cleaned = skill.strip()
+                        if 3 <= len(cleaned) <= 30 and cleaned not in stop_words:
+                            skills.add(cleaned)
+        
+        # Method 2: Extract noun phrases that are likely skills
+        for chunk in doc.noun_chunks:
+            chunk_text = chunk.text.strip()
+            # Filter by length and exclude common words
+            if 3 <= len(chunk_text) <= 30 and chunk_text not in stop_words:
+                # Check if chunk contains skill-related words
+                if any(word in chunk_text for word in ['experience', 'knowledge', 'skill', 'proficient', 'expert']):
+                    skills.add(chunk_text)
+        
+        # Method 3: Extract technical terms using TF-IDF
+        try:
+            vectorizer = TfidfVectorizer(ngram_range=(1, 2), stop_words='english', max_features=20)
+            tfidf_matrix = vectorizer.fit_transform([text_lower])
+            feature_names = vectorizer.get_feature_names_out()
+            scores = tfidf_matrix.toarray()[0]
+            top_indices = np.argsort(scores)[-15:][::-1]
+            for idx in top_indices:
+                term = feature_names[idx]
+                if 3 <= len(term) <= 30 and term not in stop_words:
+                    skills.add(term)
+        except:
+            pass
+        
+        # Method 4: Extract capitalized terms (potential proper skills)
+        capitalized = re.findall(r'\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b', text)
+        for cap in capitalized[:10]:
+            if 3 <= len(cap) <= 30:
+                skills.add(cap.lower())
+        
+        # Clean up skills
+        stopwords_list = {'the', 'a', 'an', 'and', 'or', 'of', 'to', 'in', 'for', 'on', 'with', 
+                          'by', 'at', 'from', 'as', 'is', 'was', 'are', 'were', 'be', 'been', 
+                          'have', 'has', 'had', 'do', 'does', 'did', 'but', 'so', 'if', 'then', 
+                          'else', 'when', 'where', 'which', 'while', 'using', 'including', 'such'}
+        
+        filtered_skills = [s for s in skills if s not in stopwords_list and len(s) > 2]
+        
+        return list(set(filtered_skills))[:15]  # Return top 15 unique skills
+
+# Initialize skill extractor
+skill_extractor = SkillExtractor()
 
 # ============================================================
 # PDF/DOCX PARSING FUNCTIONS
 # ============================================================
 
 def extract_text_from_pdf(file_content: bytes) -> str:
-    """Extract text from PDF file."""
     if not PDF_SUPPORT:
         raise ImportError("PyPDF2 not installed")
-    
     text = ""
     try:
         pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_content))
@@ -86,17 +153,13 @@ def extract_text_from_pdf(file_content: bytes) -> str:
                 text += page_text + "\n"
     except Exception as e:
         raise ValueError(f"Failed to parse PDF: {str(e)}")
-    
     if not text.strip():
         raise ValueError("PDF contains no extractable text")
-    
     return text
 
 def extract_text_from_docx(file_content: bytes) -> str:
-    """Extract text from DOCX file."""
     if not DOCX_SUPPORT:
         raise ImportError("python-docx not installed")
-    
     text = ""
     try:
         doc = docx.Document(io.BytesIO(file_content))
@@ -105,13 +168,10 @@ def extract_text_from_docx(file_content: bytes) -> str:
                 text += paragraph.text + "\n"
     except Exception as e:
         raise ValueError(f"Failed to parse DOCX: {str(e)}")
-    
     return text
 
 def extract_text_from_file(file_content: bytes, filename: str) -> str:
-    """Extract text from file based on extension."""
     ext = filename.lower().split('.')[-1]
-    
     if ext == 'pdf':
         return extract_text_from_pdf(file_content)
     elif ext == 'docx':
@@ -136,7 +196,6 @@ def clean_and_lemmatize(text):
     return ' '.join(words)
 
 def extract_skills_with_patterns(text, skill_patterns):
-    """Extract skills using provided patterns."""
     text_lower = text.lower()
     found = []
     for skill, pattern in skill_patterns.items():
@@ -145,7 +204,6 @@ def extract_skills_with_patterns(text, skill_patterns):
     return found
 
 def calculate_skill_score_with_weights(job_skills, resume_skills, skill_weights):
-    """Calculate weighted skill match score."""
     total_weight = 0
     matched_weight = 0
     for skill in job_skills:
@@ -165,11 +223,10 @@ def generate_recommendation(final_score, matched_count, total_required, missing_
 
 def process_resume_text(job_description, resume_text, semantic_weight=0.7, skill_weight=0.3, 
                         skill_patterns=None, skill_weights=None):
-    """Process a single resume text and return scores using provided patterns."""
     if skill_patterns is None:
-        skill_patterns = DEFAULT_SKILL_PATTERNS
+        skill_patterns = {}
     if skill_weights is None:
-        skill_weights = DEFAULT_SKILL_WEIGHTS
+        skill_weights = {}
     
     job_cleaned = clean_and_lemmatize(job_description)
     job_embedding = model.encode([job_cleaned])
@@ -197,52 +254,10 @@ def process_resume_text(job_description, resume_text, semantic_weight=0.7, skill
     }
 
 # ============================================================
-# PYDANTIC SCHEMAS
-# ============================================================
-
-class ResumeInput(BaseModel):
-    candidate_id: str
-    name: Optional[str] = None
-    text: str
-
-class ResumeFileInput(BaseModel):
-    candidate_id: str
-    name: Optional[str] = None
-    filename: str
-    content_base64: str
-
-class ScreenRequest(BaseModel):
-    job_description: str
-    resumes: List[ResumeInput]
-
-class ScreenFileRequest(BaseModel):
-    job_description: str
-    resumes: List[ResumeFileInput]
-
-class RankedCandidate(BaseModel):
-    rank: int
-    candidate_id: str
-    name: Optional[str]
-    candidate_name: Optional[str] = None
-    category: Optional[str] = None
-    semantic_score: float
-    skill_score: float
-    composite_score: float
-    matched_skills: List[str]
-    missing_skills: List[str]
-    recommendation: str
-
-class ScreenResponse(BaseModel):
-    job_reference: str
-    assessment_date: str
-    total_candidates: int
-    ranked_candidates: List[RankedCandidate]
-
-# ============================================================
 # FASTAPI APP
 # ============================================================
 
-app = FastAPI(title="Resume Screening API", version="2.0.0")
+app = FastAPI(title="Resume Screening API", version="3.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -254,83 +269,14 @@ app.add_middleware(
 
 @app.get("/")
 def root():
-    return {"message": "Resume Screening API", "version": "2.0.0"}
+    return {"message": "Resume Screening API", "version": "3.0.0"}
 
 @app.get("/health")
 def health():
     return {"status": "healthy", "model_loaded": True}
 
 # ============================================================
-# JSON + Base64 ENDPOINTS
-# ============================================================
-
-@app.post("/screen", response_model=ScreenResponse)
-def screen_resumes(request: ScreenRequest):
-    """Screen resumes with plain text input."""
-    results = []
-    for resume in request.resumes:
-        score_data = process_resume_text(request.job_description, resume.text)
-        results.append({
-            "candidate_id": resume.candidate_id,
-            "name": resume.name,
-            "candidate_name": resume.name,
-            **score_data
-        })
-    
-    results.sort(key=lambda x: x["composite_score"], reverse=True)
-    for i, r in enumerate(results, 1):
-        r["rank"] = i
-    
-    return ScreenResponse(
-        job_reference=f"JOB-{str(uuid.uuid4())[:8].upper()}",
-        assessment_date=datetime.now().isoformat(),
-        total_candidates=len(results),
-        ranked_candidates=[RankedCandidate(**r) for r in results]
-    )
-
-@app.post("/screen-files", response_model=ScreenResponse)
-def screen_resumes_from_files(request: ScreenFileRequest):
-    """Screen resumes with file uploads (PDF, DOCX, TXT) via JSON + Base64."""
-    results = []
-    
-    for resume_file in request.resumes:
-        try:
-            file_content = base64.b64decode(resume_file.content_base64)
-            resume_text = extract_text_from_file(file_content, resume_file.filename)
-            score_data = process_resume_text(request.job_description, resume_text)
-            
-            results.append({
-                "candidate_id": resume_file.candidate_id,
-                "name": resume_file.name,
-                "candidate_name": resume_file.name,
-                **score_data
-            })
-        except Exception as e:
-            results.append({
-                "candidate_id": resume_file.candidate_id,
-                "name": resume_file.name,
-                "candidate_name": resume_file.name,
-                "semantic_score": 0.0,
-                "skill_score": 0.0,
-                "composite_score": 0.0,
-                "matched_skills": [],
-                "missing_skills": [],
-                "recommendation": f"Error parsing file: {str(e)}"
-            })
-    
-    results.sort(key=lambda x: x["composite_score"], reverse=True)
-    for i, r in enumerate(results, 1):
-        r["rank"] = i
-    
-    return ScreenResponse(
-        job_reference=f"JOB-{str(uuid.uuid4())[:8].upper()}",
-        assessment_date=datetime.now().isoformat(),
-        total_candidates=len(results),
-        ranked_candidates=[RankedCandidate(**r) for r in results]
-    )
-
-# ============================================================
-# FORMDATA ENDPOINT (For Frontend)
+# FORMDATA ENDPOINT (With Auto Skill Extraction)
 # ============================================================
 
 @app.post("/screen-form")
@@ -343,29 +289,25 @@ async def screen_form(
 ):
     """
     Screen a single resume using FormData.
-    Accepts required_skills as JSON string from frontend.
+    Auto-extracts skills from job description if none provided.
     """
     try:
         # Parse required skills from frontend
         frontend_skills = json.loads(required_skills)
         
-        # Build skill patterns and weights from frontend skills
-        # Each skill gets a default weight of 2 (medium importance)
+        # If no skills provided, auto-extract from job description
+        if not frontend_skills:
+            frontend_skills = skill_extractor.extract(job_description)
+            print(f"Auto-extracted skills: {frontend_skills}")
+        
+        # Build skill patterns and weights
         skill_patterns = {}
         skill_weights = {}
         
         for skill in frontend_skills:
-            # Convert skill to lowercase for pattern matching
             skill_lower = skill.lower()
-            # Create word boundary pattern
             skill_patterns[skill_lower] = r'\b' + re.escape(skill_lower) + r'\b'
-            # Default weight for frontend skills is 2
-            skill_weights[skill_lower] = 2
-        
-        # If no skills from frontend, use defaults
-        if not skill_patterns:
-            skill_patterns = DEFAULT_SKILL_PATTERNS
-            skill_weights = DEFAULT_SKILL_WEIGHTS
+            skill_weights[skill_lower] = 2  # Default weight
         
         # Read the raw file bytes
         content = await file.read()
@@ -381,7 +323,7 @@ async def screen_form(
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported file type: {filename}")
         
-        # Process the resume with frontend skills
+        # Process the resume
         result = process_resume_text(
             job_description, resume_text, 
             semantic_weight, skill_weight,
@@ -391,7 +333,6 @@ async def screen_form(
         # Extract candidate name from filename
         candidate_name = filename.replace('.pdf', '').replace('.docx', '').replace('.txt', '')
         
-        # Return response
         return {
             "semantic_score": result["semantic_score"],
             "skill_score": result["skill_score"],
@@ -400,7 +341,8 @@ async def screen_form(
             "missing_skills": result["missing_skills"],
             "recommendation": result["recommendation"],
             "candidate_name": candidate_name,
-            "category": "Extracted from resume"
+            "category": "Extracted from resume",
+            "extracted_skills_from_jd": frontend_skills if not json.loads(required_skills) else []
         }
         
     except json.JSONDecodeError:
@@ -409,7 +351,7 @@ async def screen_form(
         raise HTTPException(status_code=500, detail=str(e))
 
 # ============================================================
-# BATCH FORMDATA ENDPOINT (For multiple files)
+# BATCH ENDPOINT
 # ============================================================
 
 @app.post("/screen-form-batch")
@@ -420,11 +362,12 @@ async def screen_form_batch(
     skill_weight: float = Form(0.3),
     required_skills: str = Form("[]")
 ):
-    """
-    Screen multiple resumes using FormData.
-    """
     try:
         frontend_skills = json.loads(required_skills)
+        
+        if not frontend_skills:
+            frontend_skills = skill_extractor.extract(job_description)
+        
         skill_patterns = {}
         skill_weights = {}
         
@@ -433,63 +376,60 @@ async def screen_form_batch(
             skill_patterns[skill_lower] = r'\b' + re.escape(skill_lower) + r'\b'
             skill_weights[skill_lower] = 2
         
-        if not skill_patterns:
-            skill_patterns = DEFAULT_SKILL_PATTERNS
-            skill_weights = DEFAULT_SKILL_WEIGHTS
-    except:
-        skill_patterns = DEFAULT_SKILL_PATTERNS
-        skill_weights = DEFAULT_SKILL_WEIGHTS
-    
-    results = []
-    
-    for file in files:
-        try:
-            content = await file.read()
-            filename = file.filename
-            
-            if filename.endswith('.pdf'):
-                resume_text = extract_text_from_pdf(content)
-            elif filename.endswith('.docx'):
-                resume_text = extract_text_from_docx(content)
-            elif filename.endswith('.txt'):
-                resume_text = content.decode('utf-8', errors='ignore')
-            else:
-                continue
-            
-            result = process_resume_text(
-                job_description, resume_text, 
-                semantic_weight, skill_weight,
-                skill_patterns, skill_weights
-            )
-            candidate_name = filename.replace('.pdf', '').replace('.docx', '').replace('.txt', '')
-            
-            results.append({
-                "candidate_name": candidate_name,
-                "filename": filename,
-                **result
-            })
-            
-        except Exception as e:
-            candidate_name = file.filename.replace('.pdf', '').replace('.docx', '').replace('.txt', '')
-            results.append({
-                "candidate_name": candidate_name,
-                "filename": file.filename,
-                "semantic_score": 0.0,
-                "skill_score": 0.0,
-                "composite_score": 0.0,
-                "matched_skills": [],
-                "missing_skills": [],
-                "recommendation": f"Error: {str(e)}"
-            })
-    
-    results.sort(key=lambda x: x["composite_score"], reverse=True)
-    for i, r in enumerate(results, 1):
-        r["rank"] = i
-    
-    return {
-        "total_candidates": len(results),
-        "ranked_candidates": results
-    }
+        results = []
+        
+        for file in files:
+            try:
+                content = await file.read()
+                filename = file.filename
+                
+                if filename.endswith('.pdf'):
+                    resume_text = extract_text_from_pdf(content)
+                elif filename.endswith('.docx'):
+                    resume_text = extract_text_from_docx(content)
+                elif filename.endswith('.txt'):
+                    resume_text = content.decode('utf-8', errors='ignore')
+                else:
+                    continue
+                
+                result = process_resume_text(
+                    job_description, resume_text, 
+                    semantic_weight, skill_weight,
+                    skill_patterns, skill_weights
+                )
+                candidate_name = filename.replace('.pdf', '').replace('.docx', '').replace('.txt', '')
+                
+                results.append({
+                    "candidate_name": candidate_name,
+                    "filename": filename,
+                    **result
+                })
+                
+            except Exception as e:
+                candidate_name = file.filename.replace('.pdf', '').replace('.docx', '').replace('.txt', '')
+                results.append({
+                    "candidate_name": candidate_name,
+                    "filename": file.filename,
+                    "semantic_score": 0.0,
+                    "skill_score": 0.0,
+                    "composite_score": 0.0,
+                    "matched_skills": [],
+                    "missing_skills": [],
+                    "recommendation": f"Error: {str(e)}"
+                })
+        
+        results.sort(key=lambda x: x["composite_score"], reverse=True)
+        for i, r in enumerate(results, 1):
+            r["rank"] = i
+        
+        return {
+            "total_candidates": len(results),
+            "ranked_candidates": results,
+            "extracted_skills_from_jd": frontend_skills if not json.loads(required_skills) else []
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
