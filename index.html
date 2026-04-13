@@ -28,9 +28,6 @@ html{scroll-behavior:smooth;}
 body{font-family:var(--fb);background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;}
 button,input,textarea,select{font-family:inherit;}
 
-/* Shell */
-.shell{display:flex;min-height:100vh;}
-
 /* Sidebar */
 .sidebar{width:var(--sw);flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:200;transition:transform .28s cubic-bezier(.4,0,.2,1);}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:199;opacity:0;transition:opacity .25s;}
@@ -68,7 +65,7 @@ nav{flex:1;padding:14px 12px;overflow-y:auto;}
 .menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px;border-radius:var(--r-xs);color:var(--text-2);transition:background .14s;}
 .menu-btn:hover{background:var(--surface-3);}
 .menu-btn svg{width:20px;height:20px;display:block;}
-.topbar-title{font-family:var(--fh);font-size:15px;font-weight:600;}
+.topbar-title{font-family:var(--fh);font-size:18px;font-weight:600;}
 .topbar-sub{font-size:12px;color:var(--text-3);margin-top:1px;}
 .tr{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .status-pill{display:flex;align-items:center;gap:6px;background:var(--surface-3);border:1px solid var(--border);border-radius:20px;padding:4px 12px 4px 8px;font-size:11px;color:var(--text-2);}
@@ -80,8 +77,13 @@ nav{flex:1;padding:14px 12px;overflow-y:auto;}
 /* Content */
 .content{padding:24px;display:flex;flex-direction:column;gap:22px;}
 
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:20px;overflow:hidden;}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);font-weight:600;}
+.card-body{padding:20px;}
+
 /* Stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
 .sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh);}
 .sc-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
 .sc-icon svg{width:16px;height:16px;}
@@ -94,76 +96,134 @@ nav{flex:1;padding:14px 12px;overflow-y:auto;}
 .sc-meta{font-size:11px;color:var(--text-3);margin-top:4px;}
 
 /* Pipeline */
-.pipe-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;box-shadow:var(--sh);}
-.pipe-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-family:var(--fh);font-size:13px;font-weight:600;}
+.pipe-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;}
+.pipe-hd{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-weight:600;}
 .pipeline{display:flex;align-items:flex-start;overflow-x:auto;padding-bottom:2px;}
 .ps{flex:1;min-width:76px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;}
 .ps:not(:last-child)::after{content:'';position:absolute;top:17px;left:calc(50% + 20px);right:calc(-50% + 20px);height:1px;background:var(--border-2);z-index:0;}
 .ps.done:not(:last-child)::after{background:var(--green-border);}
-.pi{width:34px;height:34px;border-radius:50%;border:2px solid var(--border-2);background:var(--surface-3);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;transition:all .25s;margin-bottom:7px;}
+.pi{width:34px;height:34px;border-radius:50%;border:2px solid var(--border-2);background:var(--surface-3);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;margin-bottom:7px;}
 .pi svg{width:14px;height:14px;color:var(--text-3);}
 .ps.done .pi{background:var(--green-light);border-color:var(--green-border);}
 .ps.done .pi svg{color:var(--green);}
-.ps.active .pi{background:var(--accent-light);border-color:var(--accent-border);animation:pr 1.4s infinite;}
-.ps.active .pi svg{color:var(--accent);}
+.ps.active .pi{background:var(--accent-light);border-color:var(--accent-border);}
 .pl{font-size:10.5px;color:var(--text-3);font-weight:500;}
 .ps.done .pl{color:var(--green);}.ps.active .pl{color:var(--accent);}
-@keyframes pr{0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,.2);}50%{box-shadow:0 0 0 5px rgba(37,99,235,0);}}
 
 /* Workspace */
 .workspace{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;}
 
 /* Panel */
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
 .ph{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
-.pt{display:flex;align-items:center;gap:8px;font-family:var(--fh);font-size:13px;font-weight:600;}
+.pt{display:flex;align-items:center;gap:8px;font-weight:600;}
 .pt svg{width:15px;height:15px;color:var(--accent);}
-.pa{font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;padding:3px 0;font-weight:500;transition:opacity .14s;}
-.pa:hover{opacity:.7;}
+.pa{font-size:12px;color:var(--accent);background:none;border:none;cursor:pointer;}
 .pb{padding:18px;}
 
-/* Drop zone */
-.dz{border:1.5px dashed var(--border-2);border-radius:var(--r-sm);padding:32px 20px;text-align:center;cursor:pointer;transition:all .18s;position:relative;background:var(--surface-2);}
-.dz:hover,.dz.drag{border-color:var(--accent);background:var(--accent-light);}
-.dz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.dz-icon{width:46px;height:46px;border-radius:12px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
-.dz-icon svg{width:20px;height:20px;color:var(--accent);}
-.dz-title{font-weight:600;font-size:14px;margin-bottom:4px;}
-.dz-sub{font-size:12px;color:var(--text-3);}
-.dz-types{margin-top:12px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
-.tc{font-family:var(--fm);font-size:10px;padding:3px 9px;border-radius:4px;background:var(--surface-3);border:1px solid var(--border);color:var(--text-3);}
-.file-list{display:flex;flex-direction:column;gap:7px;margin-top:14px;}
-.fi{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-xs);animation:sIn .2s ease;}
-@keyframes sIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
-.fe{font-family:var(--fm);font-size:9px;font-weight:500;padding:2px 6px;border-radius:3px;text-transform:uppercase;flex-shrink:0;}
-.ep{background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;}
-.ed{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe;}
-.et{background:#f0fdf4;color:#059669;border:1px solid #a7f3d0;}
-.fn{flex:1;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
-.fsz{font-size:11px;color:var(--text-3);flex-shrink:0;}
-.frm{background:none;border:none;cursor:pointer;color:var(--text-3);padding:2px;border-radius:4px;transition:all .12s;flex-shrink:0;line-height:1;font-size:16px;}
-.frm:hover{color:var(--red);background:var(--red-light);}
-
-/* Form */
+/* Form elements */
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12px;font-weight:500;margin-bottom:6px;color:var(--text-2);}
+.form-group input,.form-group textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:14px;}
 .fl{font-size:11px;color:var(--text-3);letter-spacing:.4px;text-transform:uppercase;margin-bottom:7px;}
-.ta{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-family:var(--fb);font-size:13px;line-height:1.65;padding:12px 14px;resize:vertical;min-height:120px;outline:none;transition:border-color .15s;}
-.ta:focus{border-color:var(--accent);background:var(--surface);}
-.ta::placeholder{color:var(--text-3);}
+.ta{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;min-height:120px;resize:vertical;}
 .cc{font-size:11px;color:var(--text-3);text-align:right;margin-top:4px;}
+.wrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.wb{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;}
+.wb label{display:block;font-size:10px;color:var(--text-3);margin-bottom:6px;}
+.wi{width:100%;background:none;border:none;outline:none;font-size:18px;font-weight:500;}
+
+/* Skills */
 .stags{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;margin-bottom:12px;}
-.stag{font-size:11.5px;font-weight:500;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);cursor:pointer;transition:all .14s;user-select:none;}
+.stag{font-size:11.5px;font-weight:500;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface-2);color:var(--text-2);cursor:pointer;}
 .stag:hover{border-color:var(--accent-border);color:var(--accent);}
 .stag.on{border-color:var(--accent-border);background:var(--accent-light);color:var(--accent);}
 .skill-input-group{display:flex;gap:8px;margin-top:4px;margin-bottom:8px;}
-.skill-input-group input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;background:var(--surface-2);outline:none;}
-.skill-input-group input:focus{border-color:var(--accent);}
-.skill-add-btn{padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;}
+.skill-input-group input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);}
+.skill-add-btn{padding:8px 16px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer;}
 .skill-note{font-size:10px;color:var(--text-3);margin-top:6px;}
-.wrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
-.wb{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;}
-.wb label{display:block;font-size:10px;color:var(--text-3);letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px;}
-.wi{width:100%;background:none;border:none;outline:none;font-family:var(--fm);font-size:18px;font-weight:500;color:var(--text);}
-.ws{font-size:10px;color:var(--text-3);margin-top:2px;}
+
+/* Drop zone */
+.dz{border:1.5px dashed var(--border-2);border-radius:8px;padding:32px 20px;text-align:center;cursor:pointer;background:var(--surface-2);}
+.dz:hover,.dz.drag{border-color:var(--accent);background:var(--accent-light);}
+.dz input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.dz-icon{width:46px;height:46px;border-radius:12px;background:var(--surface);border:1px solid var(--border);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;}
+.dz-title{font-weight:600;font-size:14px;margin-bottom:4px;}
+.dz-sub{font-size:12px;color:var(--text-3);}
+.dz-types{margin-top:12px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.tc{font-family:monospace;font-size:10px;padding:3px 9px;border-radius:4px;background:var(--surface-3);border:1px solid var(--border);}
+.file-list{display:flex;flex-direction:column;gap:7px;margin-top:14px;}
+.fi{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;}
+.fe{font-family:monospace;font-size:9px;font-weight:500;padding:2px 6px;border-radius:3px;}
+.fn{flex:1;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fsz{font-size:11px;color:var(--text-3);}
+.frm{background:none;border:none;cursor:pointer;color:var(--text-3);font-size:16px;}
+.frm:hover{color:var(--red);}
+
+/* Buttons */
+.btn{background:var(--navy);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:500;cursor:pointer;}
+.btn-primary{background:var(--accent);}
+.btn-primary:hover{background:#1d4ed8;}
+.btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text);}
+.sbtn{width:100%;margin-top:16px;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.sbtn:hover{background:var(--navy-2);}
+.sbtn:disabled{opacity:0.55;}
+
+/* Results */
+.rlist{display:flex;flex-direction:column;gap:8px;padding:14px;}
+.rc{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;cursor:pointer;}
+.rc:hover{background:var(--surface-3);}
+.rc.sel{background:var(--accent-light);border-color:var(--accent-border);}
+.rc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px;}
+.rc-rnk{font-family:monospace;font-size:10px;background:var(--surface-3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;}
+.rc-name{font-weight:600;font-size:13.5px;}
+.rsc{font-family:monospace;font-size:13px;font-weight:500;padding:3px 10px;border-radius:20px;}
+.rhi{background:var(--green-light);color:var(--green);border:1px solid var(--green-border);}
+.rmd{background:var(--amber-light);color:var(--amber);border:1px solid var(--amber-border);}
+.rlo{background:var(--red-light);color:var(--red);border:1px solid var(--red-border);}
+.bars{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+.br{display:flex;align-items:center;gap:8px;}
+.bl{width:58px;font-size:10.5px;color:var(--text-3);}
+.bt{flex:1;height:4px;background:var(--surface-3);border-radius:4px;overflow:hidden;}
+.bf{height:100%;border-radius:4px;}
+.bf.s{background:var(--accent);}
+.bf.sk{background:var(--green);}
+.bf.c{background:var(--navy);}
+.bv{width:26px;text-align:right;font-family:monospace;font-size:10px;}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
+.chip{font-size:10px;padding:2px 8px;border-radius:3px;}
+.cmatch{background:var(--green-light);color:var(--green);border:1px solid var(--green-border);}
+.cmiss{background:var(--surface-3);color:var(--text-3);border:1px solid var(--border);}
+
+/* Detail panel */
+.dp{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:20px;}
+.dp-hd{padding:16px 18px;background:var(--navy);display:flex;justify-content:space-between;align-items:flex-start;}
+.dp-nm{font-size:16px;font-weight:700;color:#fff;}
+.dp-ct{font-size:11px;color:rgba(255,255,255,.4);}
+.dp-rk{font-family:monospace;font-size:22px;font-weight:700;color:rgba(255,255,255,.9);}
+.dp-body{padding:18px;display:flex;flex-direction:column;gap:18px;}
+.dp-sl{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;}
+.gauges{display:flex;justify-content:space-around;gap:8px;}
+.gw{text-align:center;flex:1;}
+.gc{position:relative;width:72px;height:72px;margin:0 auto 6px;}
+.gc svg{display:block;}
+.gv{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:13px;font-weight:600;}
+.gl{font-size:10.5px;color:var(--text-3);}
+.dp-sb{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.dp-sr{display:flex;justify-content:space-between;padding:5px 0;}
+.dp-sr:not(:last-child){border-bottom:1px solid var(--border);}
+.dp-sk{font-size:12px;color:var(--text-2);}
+.dp-sv{font-family:monospace;font-size:12px;font-weight:600;}
+.dp-skills{display:flex;flex-wrap:wrap;gap:6px;}
+.dsk{font-size:11px;font-weight:500;padding:4px 10px;border-radius:4px;}
+.dsk.m{background:var(--green-light);color:var(--green);border:1px solid var(--green-border);}
+.dsk.x{background:var(--surface-3);color:var(--text-3);border:1px solid var(--border);}
+.dp-acts{display:flex;gap:8px;}
+.dab{flex:1;padding:10px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;text-align:center;border:1px solid var(--border);}
+.dab.p{background:var(--navy);color:#fff;border-color:transparent;}
+.dab.p:hover{background:var(--navy-2);}
+.dab.g{background:transparent;color:var(--text-2);}
+.dab.d{background:transparent;color:var(--red);}
 
 /* Progress */
 .pw{margin:14px 0 0;display:none;}
@@ -172,754 +232,267 @@ nav{flex:1;padding:14px 12px;overflow-y:auto;}
 .pf{height:100%;background:var(--accent);border-radius:4px;width:0%;transition:width .4s ease;}
 .pm{display:flex;justify-content:space-between;margin-top:5px;}
 .plbl{font-size:11px;color:var(--text-3);}
-.ppct{font-size:11px;color:var(--accent);font-family:var(--fm);}
+.ppct{font-size:11px;color:var(--accent);font-family:monospace;}
 
-/* Submit */
-.sbtn{width:100%;margin-top:16px;padding:13px;border:none;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-family:var(--fh);font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.1px;}
-.sbtn:hover{background:var(--navy-2);}
-.sbtn:active{transform:scale(.99);}
-.sbtn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
-.sbtn svg{width:16px;height:16px;}
-.spin{animation:spn .8s linear infinite;}
-@keyframes spn{to{transform:rotate(360deg);}}
-
-/* Empty */
+/* Empty state */
 .es{padding:48px 20px;text-align:center;}
 .ei{width:52px;height:52px;border-radius:16px;background:var(--surface-3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
-.ei svg{width:22px;height:22px;color:var(--text-3);}
-.et2{font-family:var(--fh);font-size:14px;font-weight:600;color:var(--text-2);margin-bottom:6px;}
-.esub{font-size:12px;color:var(--text-3);line-height:1.7;max-width:220px;margin:0 auto;}
-
-/* Results */
-.rlist{display:flex;flex-direction:column;gap:8px;padding:14px;}
-.rc{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 16px;cursor:pointer;transition:all .15s;animation:sIn .2s ease;}
-.rc:hover{background:var(--surface-3);border-color:var(--border-2);}
-.rc.sel{background:var(--accent-light);border-color:var(--accent-border);}
-.rc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:11px;}
-.rc-rnk{font-family:var(--fm);font-size:10px;font-weight:500;background:var(--surface-3);border:1px solid var(--border);padding:2px 8px;border-radius:4px;color:var(--text-3);white-space:nowrap;flex-shrink:0;}
-.rc.sel .rc-rnk{background:rgba(37,99,235,.08);border-color:var(--accent-border);color:var(--accent);}
-.rc-name{font-weight:600;font-size:13.5px;}
-.rc-cat{font-size:11px;color:var(--text-3);margin-top:2px;}
-.rsc{font-family:var(--fm);font-size:13px;font-weight:500;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;}
-.rhi{background:var(--green-light);color:var(--green);border:1px solid var(--green-border);}
-.rmd{background:var(--amber-light);color:var(--amber);border:1px solid var(--amber-border);}
-.rlo{background:var(--red-light);color:var(--red);border:1px solid var(--red-border);}
-.bars{display:flex;flex-direction:column;gap:5px;}
-.br{display:flex;align-items:center;gap:8px;}
-.bl{width:58px;font-size:10.5px;color:var(--text-3);}
-.bt{flex:1;height:4px;background:var(--surface-3);border-radius:4px;overflow:hidden;}
-.bf{height:100%;border-radius:4px;transition:width .7s cubic-bezier(.4,0,.2,1);}
-.bf.s{background:var(--accent);}
-.bf.sk{background:var(--green);}
-.bf.c{background:var(--navy);}
-.bv{width:26px;text-align:right;font-family:var(--fm);font-size:10px;color:var(--text-3);}
-.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px;}
-.chip{font-size:10px;padding:2px 8px;border-radius:3px;font-weight:500;}
-.cmatch{background:var(--green-light);color:var(--green);border:1px solid var(--green-border);}
-.cmiss{background:var(--surface-3);color:var(--text-3);border:1px solid var(--border);}
-
-/* Error banner */
-.errbanner{display:flex;align-items:flex-start;gap:10px;background:var(--red-light);border:1px solid var(--red-border);border-radius:var(--r-sm);padding:10px 12px;font-size:12px;color:var(--red);margin-bottom:8px;}
-.errbanner svg{width:14px;height:14px;flex-shrink:0;margin-top:1px;}
-
-/* Detail */
-.dp{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
-.dp-hd{padding:16px 18px;border-bottom:1px solid var(--border);background:var(--navy);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-.dp-nm{font-family:var(--fh);font-size:16px;font-weight:700;color:#fff;margin-bottom:3px;}
-.dp-ct{font-size:11px;color:rgba(255,255,255,.4);}
-.dp-rk{font-family:var(--fm);font-size:22px;font-weight:700;color:rgba(255,255,255,.9);flex-shrink:0;}
-.dp-body{padding:18px;display:flex;flex-direction:column;gap:18px;}
-.dp-sl{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--text-3);margin-bottom:12px;}
-.gauges{display:flex;justify-content:space-around;gap:8px;}
-.gw{text-align:center;flex:1;}
-.gc{position:relative;width:72px;height:72px;margin:0 auto 6px;}
-.gc svg{display:block;}
-.gv{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:13px;font-weight:600;color:var(--text);}
-.gl{font-size:10.5px;color:var(--text-3);font-weight:500;}
-.dp-sb{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px;}
-.dp-sr{display:flex;justify-content:space-between;align-items:center;padding:5px 0;}
-.dp-sr:not(:last-child){border-bottom:1px solid var(--border);}
-.dp-sk{font-size:12px;color:var(--text-2);}
-.dp-sv{font-family:var(--fm);font-size:12px;font-weight:600;color:var(--text);}
-.dp-skills{display:flex;flex-wrap:wrap;gap:6px;}
-.dsk{font-size:11px;font-weight:500;padding:4px 10px;border-radius:4px;}
-.dsk.m{background:var(--green-light);color:var(--green);border:1px solid var(--green-border);}
-.dsk.x{background:var(--surface-3);color:var(--text-3);border:1px solid var(--border);}
-.dp-acts{display:flex;gap:8px;}
-.dab{flex:1;padding:10px;border-radius:var(--r-xs);font-family:var(--fb);font-size:12px;font-weight:600;cursor:pointer;transition:all .14s;border:1px solid var(--border);text-align:center;}
-.dab.p{background:var(--navy);color:#fff;border-color:transparent;}
-.dab.p:hover{background:var(--navy-2);}
-.dab.g{background:transparent;color:var(--text-2);}
-.dab.g:hover{background:var(--surface-3);color:var(--text);}
-.dab.d{background:transparent;color:var(--red);}
-.dab.d:hover{background:var(--red-light);}
+.et2{font-size:14px;font-weight:600;color:var(--text-2);margin-bottom:6px;}
+.esub{font-size:12px;color:var(--text-3);max-width:220px;margin:0 auto;}
 
 /* Toasts */
 #toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
-.toast{display:flex;align-items:flex-start;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 16px;box-shadow:var(--sh-lg);min-width:280px;max-width:360px;animation:tIn .25s ease;pointer-events:all;font-size:13px;}
+.toast{display:flex;align-items:flex-start;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;box-shadow:var(--sh-lg);min-width:280px;animation:tIn .25s ease;pointer-events:all;font-size:13px;}
 .toast.ts{border-left:3px solid var(--green);}
 .toast.te{border-left:3px solid var(--red);}
 .toast.ti{border-left:3px solid var(--accent);}
-.tic{flex-shrink:0;margin-top:1px;}
-.tic svg{width:15px;height:15px;}
-.ts .tic svg{color:var(--green);}.te .tic svg{color:var(--red);}.ti .tic svg{color:var(--accent);}
-.tt{flex:1;line-height:1.5;}
-.ttl{font-weight:600;color:var(--text);margin-bottom:1px;}
-.tmg{font-size:12px;color:var(--text-2);}
 @keyframes tIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:none;}}
 @keyframes tOut{to{opacity:0;transform:translateX(20px);}}
 
+/* Views */
+.view{display:none;}
+.view.active{display:block;}
+
 /* Responsive */
-@media(max-width:1200px){.workspace{grid-template-columns:1fr 340px;}}
-@media(max-width:1024px){.stats{grid-template-columns:repeat(2,1fr);}.workspace{grid-template-columns:1fr;}}
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}
-  .main{margin-left:0;}.menu-btn{display:flex;}.content{padding:14px;}
-  .stats{grid-template-columns:repeat(2,1fr);gap:10px;}.topbar{padding:12px 16px;}.topbar-sub{display:none;}
-  #toasts{bottom:16px;right:12px;left:12px;}.toast{min-width:unset;max-width:100%;}
+  .main{margin-left:0;}.menu-btn{display:flex;}.stats{grid-template-columns:repeat(2,1fr);}
+  .workspace{grid-template-columns:1fr;}.content{padding:14px;}
 }
-@media(max-width:480px){.stats{grid-template-columns:1fr 1fr;}.sc-val{font-size:20px;}.gauges{gap:4px;}.dp-acts{flex-direction:column;}.wrow{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+<aside class="sidebar" id="sidebar">
   <div class="logo">
     <div class="logo-mark">
-      <div class="logo-icon">
-        <svg fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg>
-      </div>
-      <div>
-        <div class="logo-name">ResumeIQ</div>
-        <div class="logo-tag">AI Screening</div>
-      </div>
+      <div class="logo-icon"><svg fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div>
+      <div><div class="logo-name">ResumeIQ</div><div class="logo-tag">AI Screening</div></div>
     </div>
   </div>
   <nav>
     <div class="ns">Workspace</div>
-    <button class="ni active" aria-current="page">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      Screening
-      <span class="nbadge" id="nav-count">0</span>
-    </button>
-    <button class="ni"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Analytics</button>
-    <button class="ni"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>Candidates</button>
+    <button class="ni active" onclick="switchView('screening')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Screening<span class="nbadge" id="nav-count">0</span></button>
+    <button class="ni" onclick="switchView('analytics')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>Analytics</button>
+    <button class="ni" onclick="switchView('candidates')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>Candidates</button>
     <div class="ns">System</div>
-    <button class="ni"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Settings</button>
-    <button class="ni"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>API Docs</button>
+    <button class="ni" onclick="switchView('settings')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Settings</button>
+    <button class="ni" onclick="window.open('https://Aluka-P-resume-screening-api.hf.space/docs', '_blank')"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>API Docs</button>
   </nav>
   <div class="sb-foot">
-    <div class="api-chip">
-      <div class="api-row">
-        <div class="adot" id="adot"></div>
-        <span class="api-txt"><strong id="ast">Connecting...</strong></span>
-      </div>
-      <div class="api-model">all-MiniLM-L6-v2 · 384-dim · FastAPI</div>
-    </div>
+    <div class="api-chip"><div class="api-row"><div class="adot" id="adot"></div><span class="api-txt"><strong id="ast">Connecting...</strong></span></div><div class="api-model">all-MiniLM-L6-v2 · 384-dim</div></div>
   </div>
 </aside>
 
-<div class="main" role="main">
+<div class="main">
   <div class="topbar">
-    <div class="tl">
-      <button class="menu-btn" onclick="toggleSidebar()" aria-label="Toggle navigation menu" aria-expanded="false" id="menu-btn">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
-      <div>
-        <div class="topbar-title">Resume Screening</div>
-        <div class="topbar-sub">Semantic similarity · Weighted skill matching · Hybrid scoring</div>
-      </div>
-    </div>
-    <div class="tr">
-      <div class="status-pill" role="status" aria-live="polite">
-        <div class="dot" id="sdot" style="background:var(--text-3)"></div>
-        <span id="slbl">Connecting</span>
-      </div>
-      <button class="export-btn" id="export-btn" onclick="exportCSV()" aria-label="Export results as CSV">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        Export CSV
-      </button>
-    </div>
+    <div class="tl"><button class="menu-btn" onclick="toggleSidebar()">☰</button><div><div class="topbar-title" id="pageTitle">Screening</div><div class="topbar-sub">Semantic similarity · Weighted skill matching</div></div></div>
+    <div class="tr"><div class="status-pill"><div class="dot" id="sdot"></div><span id="slbl">Connecting</span></div><button class="export-btn" id="export-btn" onclick="exportCSV()">Export CSV</button></div>
   </div>
 
   <div class="content">
+    <!-- SCREENING VIEW -->
+    <div id="screeningView" class="view active">
+      <div class="stats">
+        <div class="sc"><div class="sc-icon ic-bl"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div><div class="sc-label">Resumes screened</div><div class="sc-val" id="ss">0</div><div class="sc-meta" id="sf">No files uploaded</div></div>
+        <div class="sc"><div class="sc-icon ic-gr"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="sc-label">Shortlisted</div><div class="sc-val" id="sh">0</div><div class="sc-meta" id="shp">Threshold: ≥ 65%</div></div>
+        <div class="sc"><div class="sc-icon ic-am"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></div><div class="sc-label">Avg composite score</div><div class="sc-val" id="sa">—</div><div class="sc-meta">70% semantic + 30% skill</div></div>
+        <div class="sc"><div class="sc-icon ic-nv"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div><div class="sc-label">Skills library</div><div class="sc-val" id="skillCount">0</div><div class="sc-meta">Active skills</div></div>
+      </div>
 
-    <!-- Stats -->
-    <div class="stats" role="region" aria-label="Screening statistics">
-      <div class="sc">
-        <div class="sc-icon ic-bl"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div>
-        <div class="sc-label">Resumes screened</div>
-        <div class="sc-val" id="ss">0</div>
-        <div class="sc-meta" id="sf">No files uploaded</div>
-      </div>
-      <div class="sc">
-        <div class="sc-icon ic-gr"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-        <div class="sc-label">Shortlisted</div>
-        <div class="sc-val" id="sh">0</div>
-        <div class="sc-meta" id="shp">Threshold: ≥ 65%</div>
-      </div>
-      <div class="sc">
-        <div class="sc-icon ic-am"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></div>
-        <div class="sc-label">Avg composite score</div>
-        <div class="sc-val" id="sa">—</div>
-        <div class="sc-meta">70% semantic + 30% skill</div>
-      </div>
-      <div class="sc">
-        <div class="sc-icon ic-nv"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-        <div class="sc-label">Inference model</div>
-        <div class="sc-val" style="font-size:14px;padding-top:6px;letter-spacing:-.2px">MiniLM-L6</div>
-        <div class="sc-meta">384-dim · Hugging Face</div>
-      </div>
-    </div>
+      <div class="pipe-card"><div class="pipe-hd"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="var(--accent)" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>ML Pipeline</div><div class="pipeline"><div class="ps" id="p0"><div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div><span class="pl">Parse</span></div><div class="ps" id="p1"><div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg></div><span class="pl">Preprocess</span></div><div class="ps" id="p2"><div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg></div><span class="pl">Embed</span></div><div class="ps" id="p3"><div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><span class="pl">Score</span></div><div class="ps" id="p4"><div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg></div><span class="pl">Rank</span></div></div></div>
 
-    <!-- Pipeline -->
-    <div class="pipe-card" role="region" aria-label="ML pipeline status">
-      <div class="pipe-hd">
-        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="var(--accent)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        ML Pipeline
-      </div>
-      <div class="pipeline" role="list">
-        <div class="ps" id="p0" role="listitem">
-          <div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div>
-          <span class="pl">Parse</span>
+      <div class="workspace">
+        <div>
+          <div class="panel"><div class="ph"><span class="pt"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>Resume Upload</span><button class="pa" onclick="clearFiles()">Clear all</button></div>
+            <div class="pb"><div class="dz" id="dz"><input type="file" id="finput" accept=".pdf,.docx,.txt" multiple onchange="addFiles(this.files)"/><div class="dz-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg></div><div class="dz-title">Drop resumes here</div><div class="dz-sub">or click to browse — PDF, DOCX, TXT</div><div class="dz-types"><span class="tc">PDF</span><span class="tc">DOCX</span><span class="tc">TXT</span></div></div><div class="file-list" id="flist"></div></div></div>
+
+          <div class="panel"><div class="ph"><span class="pt"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Job Description</span></div>
+            <div class="pb"><div class="fl">Full job description</div><textarea class="ta" id="jd" placeholder="Paste job description here..." maxlength="5000" oninput="document.getElementById('cc').textContent=this.value.length"></textarea><div class="cc"><span id="cc">0</span> / 5000</div>
+              <div style="margin-top:16px;"><div class="fl">Required skills (click to toggle on/off)</div><div class="stags" id="stags"></div><div class="skill-input-group"><input type="text" id="newSkillInput" placeholder="Add any skill (e.g., Recruitment, SEO, Payroll)"><button class="skill-add-btn" onclick="addSkill()">Add Skill</button></div><div class="skill-note">Tip: Add skills for ANY job category — HR, Marketing, Finance, Sales, Engineering, etc.</div></div>
+              <div class="wrow"><div class="wb"><label for="ws">Semantic weight</label><input class="wi" id="ws" type="number" min="0" max="100" value="70"/><div class="ws">% of composite score</div></div><div class="wb"><label for="wk">Skill weight</label><input class="wi" id="wk" type="number" min="0" max="100" value="30"/><div class="ws">% of composite score</div></div></div>
+              <div class="pw" id="pw"><div class="pt2"><div class="pf" id="pf"></div></div><div class="pm"><span class="plbl" id="plbl">Initializing...</span><span class="ppct" id="ppct">0%</span></div></div>
+              <button class="sbtn" id="sbtn" onclick="runScreening()"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>Run Screening</button>
+            </div></div>
         </div>
-        <div class="ps" id="p1" role="listitem">
-          <div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg></div>
-          <span class="pl">Preprocess</span>
-        </div>
-        <div class="ps" id="p2" role="listitem">
-          <div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg></div>
-          <span class="pl">Embed</span>
-        </div>
-        <div class="ps" id="p3" role="listitem">
-          <div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
-          <span class="pl">Score</span>
-        </div>
-        <div class="ps" id="p4" role="listitem">
-          <div class="pi"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg></div>
-          <span class="pl">Rank</span>
+
+        <div>
+          <div class="panel"><div class="ph"><span class="pt"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>Ranked Results</span><span id="rcount" style="font-size:11px;color:var(--text-3);font-family:monospace"></span></div>
+            <div id="rbody"><div class="es"><div class="ei"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div><div class="et2">No results yet</div><div class="esub">Upload resumes, paste a job description, then click Run Screening.</div></div></div></div>
+
+          <div class="dp" id="dp" style="display:none"><div class="dp-hd"><div><div class="dp-nm" id="dpnm">—</div><div class="dp-ct" id="dpct">—</div></div><div class="dp-rk" id="dprk">—</div></div>
+            <div class="dp-body"><div><div class="dp-sl">Score breakdown</div><div class="gauges"><div class="gw"><div class="gc"><svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="28" fill="none" stroke="var(--surface-3)" stroke-width="7" transform="rotate(-90 36 36)"/><circle id="gc0" cx="36" cy="36" r="28" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="176" stroke-dashoffset="176" stroke-linecap="round" transform="rotate(-90 36 36)"/></svg><div class="gv" id="gv0">0%</div></div><div class="gl">Semantic</div></div><div class="gw"><div class="gc"><svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="28" fill="none" stroke="var(--surface-3)" stroke-width="7" transform="rotate(-90 36 36)"/><circle id="gc1" cx="36" cy="36" r="28" fill="none" stroke="var(--green)" stroke-width="7" stroke-dasharray="176" stroke-dashoffset="176" stroke-linecap="round" transform="rotate(-90 36 36)"/></svg><div class="gv" id="gv1">0%</div></div><div class="gl">Skill</div></div><div class="gw"><div class="gc"><svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="28" fill="none" stroke="var(--surface-3)" stroke-width="7" transform="rotate(-90 36 36)"/><circle id="gc2" cx="36" cy="36" r="28" fill="none" stroke="var(--navy)" stroke-width="7" stroke-dasharray="176" stroke-dashoffset="176" stroke-linecap="round" transform="rotate(-90 36 36)"/></svg><div class="gv" id="gv2">0%</div></div><div class="gl">Composite</div></div></div></div>
+              <div class="dp-sb"><div class="dp-sr"><span class="dp-sk">Semantic similarity</span><span class="dp-sv" id="dsv">—</span></div><div class="dp-sr"><span class="dp-sk">Skill match score</span><span class="dp-sv" id="dskv">—</span></div><div class="dp-sr"><span class="dp-sk">Composite (weighted)</span><span class="dp-sv" id="dcv">—</span></div><div class="dp-sr"><span class="dp-sk">Shortlist status</span><span class="dp-sv" id="dthv">—</span></div></div>
+              <div><div class="dp-sl">Skill match</div><div class="dp-skills" id="dpsk"></div></div>
+              <div class="dp-acts"><button class="dab p" onclick="actShortlist()">Shortlist</button><button class="dab g" onclick="actDownload()">Download</button><button class="dab d" onclick="actReject()">Reject</button></div>
+            </div></div>
         </div>
       </div>
     </div>
 
-    <!-- Workspace -->
-    <div class="workspace">
-
-      <!-- Left -->
-      <div style="display:flex;flex-direction:column;gap:20px;">
-
-        <div class="panel">
-          <div class="ph">
-            <span class="pt">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-              Resume Upload
-            </span>
-            <button class="pa" onclick="clearFiles()">Clear all</button>
-          </div>
-          <div class="pb">
-            <div class="dz" id="dz" role="button" tabindex="0" aria-label="Upload resume files — drag and drop or click to browse">
-              <input type="file" id="finput" accept=".pdf,.docx,.txt" multiple aria-label="Select files" onchange="addFiles(this.files)"/>
-              <div class="dz-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg></div>
-              <div class="dz-title">Drop resumes here</div>
-              <div class="dz-sub">or click to browse — PDF, DOCX, TXT</div>
-              <div class="dz-types"><span class="tc">PDF</span><span class="tc">DOCX</span><span class="tc">TXT</span></div>
-            </div>
-            <div class="file-list" id="flist" role="list" aria-label="Uploaded files"></div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="ph">
-            <span class="pt">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-              Job Description
-            </span>
-          </div>
-          <div class="pb">
-            <div class="fl">Full job description</div>
-            <textarea class="ta" id="jd" aria-label="Job description" placeholder="Paste the complete job description here. The system will embed this text and compute cosine similarity against each resume, then apply weighted skill matching to produce a composite ranking score." maxlength="5000" oninput="document.getElementById('cc').textContent=this.value.length"></textarea>
-            <div class="cc"><span id="cc">0</span> / 5000</div>
-
-            <div style="margin-top:16px;">
-              <div class="fl">Required skills (click to toggle on/off — add your own)</div>
-              <div class="stags" id="stags" role="group" aria-label="Skill filters">
-                <span class="stag on" role="checkbox" aria-checked="true" tabindex="0" onclick="tog(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog(this)}">Python</span>
-                <span class="stag on" role="checkbox" aria-checked="true" tabindex="0" onclick="tog(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog(this)}">Machine Learning</span>
-                <span class="stag on" role="checkbox" aria-checked="true" tabindex="0" onclick="tog(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tog(this)}">SQL</span>
-              </div>
-              <div class="skill-input-group">
-                <input type="text" id="newSkillInput" placeholder="Add any skill (e.g., Recruitment, SEO, Payroll, Sales)">
-                <button class="skill-add-btn" onclick="addSkill()">Add Skill</button>
-              </div>
-              <div class="skill-note">💡 Tip: Add skills for ANY job category — HR, Marketing, Finance, Sales, Engineering, etc.</div>
-            </div>
-
-            <div class="wrow">
-              <div class="wb">
-                <label for="ws">Semantic weight</label>
-                <input class="wi" id="ws" type="number" min="0" max="100" value="70" aria-label="Semantic weight percentage"/>
-                <div class="ws">% of composite score</div>
-              </div>
-              <div class="wb">
-                <label for="wk">Skill weight</label>
-                <input class="wi" id="wk" type="number" min="0" max="100" value="30" aria-label="Skill weight percentage"/>
-                <div class="ws">% of composite score</div>
-              </div>
-            </div>
-
-            <div class="pw" id="pw">
-              <div class="pt2"><div class="pf" id="pf"></div></div>
-              <div class="pm"><span class="plbl" id="plbl">Initializing...</span><span class="ppct" id="ppct">0%</span></div>
-            </div>
-
-            <button class="sbtn" id="sbtn" onclick="runScreening()" aria-label="Run resume screening">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              Run Screening
-            </button>
-          </div>
-        </div>
+    <!-- ANALYTICS VIEW -->
+    <div id="analyticsView" class="view">
+      <div class="stats">
+        <div class="sc"><div class="sc-icon ic-bl"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div><div class="sc-label">Total Screened</div><div class="sc-val" id="analyticsTotal">0</div></div>
+        <div class="sc"><div class="sc-icon ic-gr"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="sc-label">Shortlist Rate</div><div class="sc-val" id="analyticsRate">0%</div></div>
+        <div class="sc"><div class="sc-icon ic-am"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div><div class="sc-label">Avg Match Score</div><div class="sc-val" id="analyticsAvg">—</div></div>
+        <div class="sc"><div class="sc-icon ic-nv"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div><div class="sc-label">Unique Skills</div><div class="sc-val" id="analyticsSkills">0</div></div>
       </div>
+      <div class="card"><div class="card-header">Top Demanded Skills</div><div class="card-body"><div id="topSkillsList" style="display:flex;flex-wrap:wrap;gap:10px;"></div></div></div>
+      <div class="card"><div class="card-header">Screening History</div><div class="card-body"><div id="historyList" style="max-height:300px;overflow-y:auto;"></div></div></div>
+    </div>
 
-      <!-- Right -->
-      <div style="display:flex;flex-direction:column;gap:20px;">
+    <!-- CANDIDATES VIEW -->
+    <div id="candidatesView" class="view">
+      <div class="card"><div class="card-header">Shortlisted Candidates</div><div class="card-body"><div id="shortlistContainer" style="max-height:500px;overflow-y:auto;"></div></div></div>
+    </div>
 
-        <div class="panel">
-          <div class="ph">
-            <span class="pt">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-              Ranked Results
-            </span>
-            <span id="rcount" style="font-size:11px;color:var(--text-3);font-family:var(--fm)"></span>
-          </div>
-          <div id="rbody">
-            <div class="es">
-              <div class="ei"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div>
-              <div class="et2">No results yet</div>
-              <div class="esub">Upload resumes, paste a job description, then click Run Screening to see AI-ranked candidates here.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="dp" id="dp" style="display:none" aria-live="polite" aria-label="Candidate detail">
-          <div class="dp-hd">
-            <div>
-              <div class="dp-nm" id="dpnm">—</div>
-              <div class="dp-ct" id="dpct">—</div>
-            </div>
-            <div class="dp-rk" id="dprk">—</div>
-          </div>
-          <div class="dp-body">
-            <div>
-              <div class="dp-sl">Score breakdown</div>
-              <div class="gauges">
-                <div class="gw">
-                  <div class="gc">
-                    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
-                      <circle cx="36" cy="36" r="28" fill="none" stroke="var(--surface-3)" stroke-width="7" transform="rotate(-90 36 36)"/>
-                      <circle id="gc0" cx="36" cy="36" r="28" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="176" stroke-dashoffset="176" stroke-linecap="round" transform="rotate(-90 36 36)" style="transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)"/>
-                    </svg>
-                    <div class="gv" id="gv0">0%</div>
-                  </div>
-                  <div class="gl">Semantic</div>
-                </div>
-                <div class="gw">
-                  <div class="gc">
-                    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
-                      <circle cx="36" cy="36" r="28" fill="none" stroke="var(--surface-3)" stroke-width="7" transform="rotate(-90 36 36)"/>
-                      <circle id="gc1" cx="36" cy="36" r="28" fill="none" stroke="var(--green)" stroke-width="7" stroke-dasharray="176" stroke-dashoffset="176" stroke-linecap="round" transform="rotate(-90 36 36)" style="transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)"/>
-                    </svg>
-                    <div class="gv" id="gv1">0%</div>
-                  </div>
-                  <div class="gl">Skill</div>
-                </div>
-                <div class="gw">
-                  <div class="gc">
-                    <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
-                      <circle cx="36" cy="36" r="28" fill="none" stroke="var(--surface-3)" stroke-width="7" transform="rotate(-90 36 36)"/>
-                      <circle id="gc2" cx="36" cy="36" r="28" fill="none" stroke="var(--navy)" stroke-width="7" stroke-dasharray="176" stroke-dashoffset="176" stroke-linecap="round" transform="rotate(-90 36 36)" style="transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)"/>
-                    </svg>
-                    <div class="gv" id="gv2">0%</div>
-                  </div>
-                  <div class="gl">Composite</div>
-                </div>
-              </div>
-            </div>
-            <div class="dp-sb">
-              <div class="dp-sr"><span class="dp-sk">Semantic similarity</span><span class="dp-sv" id="dsv">—</span></div>
-              <div class="dp-sr"><span class="dp-sk">Skill match score</span><span class="dp-sv" id="dskv">—</span></div>
-              <div class="dp-sr"><span class="dp-sk">Composite (weighted)</span><span class="dp-sv" id="dcv">—</span></div>
-              <div class="dp-sr"><span class="dp-sk">Shortlist status</span><span class="dp-sv" id="dthv">—</span></div>
-            </div>
-            <div>
-              <div class="dp-sl">Skill match</div>
-              <div class="dp-skills" id="dpsk"></div>
-            </div>
-            <div class="dp-acts">
-              <button class="dab p" onclick="actShortlist()">Shortlist</button>
-              <button class="dab g" onclick="actDownload()">Download</button>
-              <button class="dab d" onclick="actReject()">Reject</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
+    <!-- SETTINGS VIEW -->
+    <div id="settingsView" class="view">
+      <div class="card"><div class="card-header">API Configuration</div><div class="card-body"><div class="form-group"><label>API Endpoint</label><input type="text" id="apiEndpoint" value="https://Aluka-P-resume-screening-api.hf.space" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:8px;"></div><button class="btn" onclick="updateAPI()">Test Connection</button><div id="apiTestResult" style="margin-top:12px;"></div></div></div>
+      <div class="card"><div class="card-header">Default Weights</div><div class="card-body"><div class="wrow"><div class="wb"><label>Default Semantic Weight</label><input type="number" id="defaultSemWeight" value="70" class="wi"/></div><div class="wb"><label>Default Skill Weight</label><input type="number" id="defaultSkillWeight" value="30" class="wi"/></div></div><button class="btn" onclick="saveDefaultWeights()">Save Defaults</button></div></div>
+      <div class="card"><div class="card-header">Shortlist Threshold</div><div class="card-body"><div class="wrow"><div class="wb"><label>Threshold (%)</label><input type="number" id="thresholdValue" value="65" min="0" max="100" class="wi"/></div></div><button class="btn" onclick="saveThreshold()">Save Threshold</button></div></div>
+      <div class="card"><div class="card-header">Data Management</div><div class="card-body"><button class="btn btn-secondary" onclick="exportAllData()">Export All Data (JSON)</button><button class="btn btn-secondary" onclick="clearAllData()" style="margin-left:10px;background:var(--red);color:white;">Clear All Data</button></div></div>
     </div>
   </div>
 </div>
 
-<div id="toasts" aria-live="assertive" aria-atomic="true"></div>
-
-<footer style="border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-size:11px;color:var(--text-3);font-family:var(--fm);margin-top:20px;">
-  ResumeIQ — AI-Powered Resume Screening | Built by Aluka Precious Oluchukwu — Machine Learning Engineer
-</footer>
+<div id="toasts"></div>
+<footer style="border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-size:11px;color:var(--text-3);font-family:monospace;">ResumeIQ — AI-Powered Resume Screening | Built by Aluka Precious Oluchukwu — Machine Learning Engineer</footer>
 
 <script>
 'use strict';
-// API endpoint - Hugging Face Space live URL
-const API='https://Aluka-P-resume-screening-api.hf.space';
-let files=[],results=[],selIdx=null;
+const DEFAULT_API = 'https://Aluka-P-resume-screening-api.hf.space';
+let API = DEFAULT_API;
+let files = [];
+let results = [];
+let selIdx = null;
+let skills = ['Python', 'Machine Learning', 'SQL'];
+let selectedSkills = new Set(skills);
 
-// Sidebar
-function toggleSidebar(){
-  const s=document.getElementById('sidebar'),o=document.getElementById('overlay'),b=document.getElementById('menu-btn');
-  const open=s.classList.toggle('open');
-  o.classList.toggle('show',open);
-  b.setAttribute('aria-expanded',open);
+function loadSavedData() {
+  const savedApi = localStorage.getItem('resumeIQ_api');
+  if (savedApi) API = savedApi;
+  const savedResults = localStorage.getItem('resumeIQ_results');
+  if (savedResults) { results = JSON.parse(savedResults); renderResults(); updateStats(); }
+  const savedSkills = localStorage.getItem('resumeIQ_skills');
+  if (savedSkills) { skills = JSON.parse(savedSkills); selectedSkills = new Set(skills); }
+  renderSkills(); updateSkillCount(); loadSettings();
 }
-function closeSidebar(){
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
-  document.getElementById('menu-btn').setAttribute('aria-expanded','false');
+function saveData() { localStorage.setItem('resumeIQ_results', JSON.stringify(results)); localStorage.setItem('resumeIQ_skills', JSON.stringify(skills)); }
+function renderSkills() { const c = document.getElementById('stags'); if(c) c.innerHTML = skills.map(s => `<span class="stag ${selectedSkills.has(s)?'on':''}" onclick="toggleSkill(this,'${s}')">${s}</span>`).join(''); updateSkillCount(); }
+function updateSkillCount() { document.getElementById('skillCount').innerText = skills.length; }
+function toggleSkill(el,s) { if(selectedSkills.has(s)) selectedSkills.delete(s); else selectedSkills.add(s); el.classList.toggle('on'); saveData(); }
+function addSkill() { const inp=document.getElementById('newSkillInput'); const s=inp.value.trim(); if(!s)return; if(!skills.includes(s)){ skills.push(s); selectedSkills.add(s); renderSkills(); inp.value=''; saveData(); toast('s','Skill added',`${s} added`); } }
+function getSelectedSkills() { return Array.from(selectedSkills); }
+
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(view=>view.classList.remove('active'));
+  document.getElementById(`${v}View`).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  event.target.closest('.ni').classList.add('active');
+  document.getElementById('pageTitle').innerText = v.charAt(0).toUpperCase()+v.slice(1);
+  if(v==='analytics') updateAnalytics();
+  if(v==='candidates') renderShortlisted();
 }
+function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();});
 
-// API health
 async function checkAPI(){
-  const ad=document.getElementById('adot'),at=document.getElementById('ast');
-  const sd=document.getElementById('sdot'),sl=document.getElementById('slbl');
-  try{
-    const r=await fetch(`${API}/health`,{signal:AbortSignal.timeout(4000)});
-    if(r.ok){
-      ad.className='adot on';at.textContent='API online';
-      sd.style.background='var(--green)';sl.textContent='Online';
-    } else throw new Error();
-  }catch{
-    ad.className='adot off';at.textContent='API offline';
-    sd.style.background='var(--red)';sl.textContent='Offline';
-  }
+  const adot=document.getElementById('adot'),ast=document.getElementById('ast'),sd=document.getElementById('sdot'),sl=document.getElementById('slbl');
+  try{ const r=await fetch(`${API}/health`,{signal:AbortSignal.timeout(4000)}); if(r.ok){ adot.className='adot on'; ast.textContent='API online'; sd.style.background='var(--green)'; sl.textContent='Online'; } else throw new Error(); }
+  catch{ adot.className='adot off'; ast.textContent='API offline'; sd.style.background='var(--red)'; sl.textContent='Offline'; }
 }
-checkAPI();setInterval(checkAPI,30000);
+checkAPI(); setInterval(checkAPI,30000);
 
-// Drag & drop
 const dz=document.getElementById('dz');
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
-dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('drag');});
-dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');addFiles(e.dataTransfer.files);});
-dz.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();document.getElementById('finput').click();}});
-
+if(dz){
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
+  dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('drag');});
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');addFiles(e.dataTransfer.files);});
+}
 async function addFiles(fl){
   let added=0,dupes=0,invalid=0;
-  for(const f of fl){
-    const ext=f.name.split('.').pop().toLowerCase();
-    if(!['pdf','docx','txt'].includes(ext)){invalid++;continue;}
-    if(files.find(x=>x.name===f.name&&x.size===f.size)){dupes++;continue;}
-    files.push(f);added++;
-  }
-  renderFiles();updateStats();
-  if(added)toast('s',`${added} file${added>1?'s':''} added`,`Ready for screening`);
-  if(dupes)toast('i','Duplicates skipped',`${dupes} file${dupes>1?'s were':' was'} already in the list`);
-  if(invalid)toast('e','Unsupported format','Only PDF, DOCX and TXT files are accepted');
+  for(const f of fl){ const ext=f.name.split('.').pop().toLowerCase(); if(!['pdf','docx','txt'].includes(ext)){invalid++;continue;} if(files.find(x=>x.name===f.name&&x.size===f.size)){dupes++;continue;} files.push(f); added++; }
+  renderFiles(); updateStats();
+  if(added) toast('s',`${added} file${added>1?'s':''} added`,'Ready');
+  if(dupes) toast('i','Duplicates skipped',`${dupes} duplicate(s)`);
+  if(invalid) toast('e','Unsupported format','Only PDF,DOCX,TXT');
   document.getElementById('finput').value='';
 }
+function renderFiles(){ const c=document.getElementById('flist'); if(!c)return; c.innerHTML=files.map((f,i)=>{ const ext=f.name.split('.').pop().toLowerCase(); const kb=f.size/1024; const sz=kb>=1024?`${(kb/1024).toFixed(1)} MB`:`${kb.toFixed(0)} KB`; return `<div class="fi"><span class="fe">${ext}</span><span class="fn">${esc(f.name)}</span><span class="fsz">${sz}</span><button class="frm" onclick="rmFile(${i})">×</button></div>`; }).join(''); document.getElementById('nav-count').textContent=files.length; }
+function rmFile(i){ files.splice(i,1); renderFiles(); updateStats(); toast('i','File removed',''); }
+function clearFiles(){ if(!files.length)return; files=[]; renderFiles(); updateStats(); toast('i','Cleared','All files removed'); }
 
-function renderFiles(){
-  const c=document.getElementById('flist');
-  c.innerHTML=files.map((f,i)=>{
-    const ext=f.name.split('.').pop().toLowerCase();
-    const ec={pdf:'ep',docx:'ed',txt:'et'}[ext]||'';
-    const kb=f.size/1024;
-    const sz=kb>=1024?`${(kb/1024).toFixed(1)} MB`:`${kb.toFixed(0)} KB`;
-    return `<div class="fi" role="listitem">
-      <span class="fe ${ec}">${esc(ext)}</span>
-      <span class="fn" title="${esc(f.name)}">${esc(f.name)}</span>
-      <span class="fsz">${sz}</span>
-      <button class="frm" onclick="rmFile(${i})" aria-label="Remove ${esc(f.name)}">×</button>
-    </div>`;
-  }).join('');
-  document.getElementById('nav-count').textContent=files.length;
-}
-
-function rmFile(i){const n=files[i].name;files.splice(i,1);renderFiles();updateStats();toast('i','File removed',n);}
-function clearFiles(){if(!files.length)return;files=[];renderFiles();updateStats();toast('i','Cleared','All files removed');}
-function tog(el){const on=el.classList.toggle('on');el.setAttribute('aria-checked',on);}
-function getSkills(){return[...document.querySelectorAll('#stags .stag.on')].map(e=>e.textContent.trim());}
-function addSkill(){
-  const input=document.getElementById('newSkillInput');
-  const skill=input.value.trim();
-  if(!skill)return;
-  const stags=document.getElementById('stags');
-  const newTag=document.createElement('span');
-  newTag.className='stag on';
-  newTag.setAttribute('role','checkbox');
-  newTag.setAttribute('aria-checked','true');
-  newTag.tabIndex=0;
-  newTag.textContent=skill;
-  newTag.onclick=function(){tog(this);};
-  newTag.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tog(this);}};
-  stags.appendChild(newTag);
-  input.value='';
-  toast('s','Skill added',`${skill} added to required skills list`);
-}
-
-// Pipeline
 const pids=['p0','p1','p2','p3','p4'];
-function resetPipe(){pids.forEach(id=>document.getElementById(id).className='ps');}
-function setPipe(idx){for(let i=0;i<idx;i++)document.getElementById(pids[i]).className='ps done';if(idx<pids.length)document.getElementById(pids[idx]).className='ps active';}
-function donePipe(){pids.forEach(id=>document.getElementById(id).className='ps done');}
+function resetPipe(){ pids.forEach(id=>document.getElementById(id).className='ps'); }
+function setPipe(idx){ for(let i=0;i<idx;i++)document.getElementById(pids[i]).className='ps done'; if(idx<pids.length)document.getElementById(pids[idx]).className='ps active'; }
+function donePipe(){ pids.forEach(id=>document.getElementById(id).className='ps done'); }
+function setProgress(pct,lbl){ const w=document.getElementById('pw'); if(w)w.classList.add('show'); const pf=document.getElementById('pf'); if(pf)pf.style.width=pct+'%'; const plbl=document.getElementById('plbl'); if(plbl)plbl.textContent=lbl; const ppct=document.getElementById('ppct'); if(ppct)ppct.textContent=Math.round(pct)+'%'; }
+function hideProgress(){ const w=document.getElementById('pw'); if(w)w.classList.remove('show'); }
 
-// Progress
-function setProgress(pct,lbl){
-  const w=document.getElementById('pw');w.classList.add('show');
-  document.getElementById('pf').style.width=pct+'%';
-  document.getElementById('plbl').textContent=lbl;
-  document.getElementById('ppct').textContent=Math.round(pct)+'%';
-}
-function hideProgress(){
-  document.getElementById('pw').classList.remove('show');
-  document.getElementById('pf').style.width='0%';
-}
-
-// Screening - Using FormData endpoint
 async function runScreening(){
   const jd=document.getElementById('jd').value.trim();
-  if(!files.length){toast('e','No files','Please upload at least one resume.');return;}
-  if(!jd){toast('e','No job description','Please paste a job description.');return;}
+  if(!files.length){ toast('e','No files','Upload resumes'); return; }
+  if(!jd){ toast('e','No job description','Paste job description'); return; }
   const wSem=parseInt(document.getElementById('ws').value)||70;
   const wSk=parseInt(document.getElementById('wk').value)||30;
-  if(wSem+wSk!==100){toast('e','Invalid weights','Semantic + Skill weights must add up to 100.');return;}
-
-  const btn=document.getElementById('sbtn');
-  btn.disabled=true;
-  btn.innerHTML=`<svg class="spin" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Screening ${files.length} resume${files.length>1?'s':''}...`;
-
-  resetPipe();setPipe(0);setProgress(5,'Parsing documents...');
-  const out=[];let failed=0;
-
+  if(wSem+wSk!==100){ toast('e','Invalid weights','Must add to 100'); return; }
+  const btn=document.getElementById('sbtn'); btn.disabled=true; btn.innerHTML='<svg class="spin" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Screening...';
+  resetPipe(); setPipe(0); setProgress(5,'Parsing...');
+  const out=[]; let failed=0; const selectedSkillsList=getSelectedSkills();
   for(let i=0;i<files.length;i++){
-    const f=files[i];
-    const pct=5+((i/files.length)*75);
-    setProgress(pct,`Processing ${i+1} of ${files.length}: ${f.name}`);
-    if(i===0)setPipe(1);
-    if(i===Math.floor(files.length/2))setPipe(2);
-
-    const fd=new FormData();
-    fd.append('file',f);
-    fd.append('job_description',jd);
-    fd.append('semantic_weight',(wSem/100).toString());
-    fd.append('skill_weight',(wSk/100).toString());
-
+    const f=files[i]; const pct=5+((i/files.length)*75); setProgress(pct,`Processing ${i+1}/${files.length}: ${f.name}`);
+    if(i===0)setPipe(1); if(i===Math.floor(files.length/2))setPipe(2);
+    const fd=new FormData(); fd.append('file',f); fd.append('job_description',jd); fd.append('semantic_weight',(wSem/100).toString()); fd.append('skill_weight',(wSk/100).toString()); fd.append('required_skills',JSON.stringify(selectedSkillsList));
     try{
       const resp=await fetch(`${API}/screen-form`,{method:'POST',body:fd,signal:AbortSignal.timeout(30000)});
-      if(!resp.ok){throw new Error(`HTTP ${resp.status}`);}
+      if(!resp.ok)throw new Error(`HTTP ${resp.status}`);
       const data=await resp.json();
-      out.push({
-        ...data,
-        _fn:f.name,
-        _fo:f,
-        composite_score:data.composite_score||0,
-        semantic_score:data.semantic_score||0,
-        skill_score:data.skill_score||0,
-        matched_skills:data.matched_skills||[],
-        missing_skills:data.missing_skills||[],
-        recommendation:data.recommendation||''
-      });
-    }catch(err){
-      failed++;
-      console.error(`Failed ${f.name}:`,err);
-      out.push({
-        _fn:f.name,_fo:f,_err:err.message,_fail:true,
-        candidate_name:f.name.replace(/\.[^.]+$/,''),category:'Parse error',
-        semantic_score:0,skill_score:0,composite_score:0,
-        matched_skills:[],missing_skills:getSkills(),
-        recommendation:'Error processing file'
-      });
-    }
+      out.push({...data,_fn:f.name,_fo:f,composite_score:data.composite_score||0,semantic_score:data.semantic_score||0,skill_score:data.skill_score||0,matched_skills:data.matched_skills||[],missing_skills:data.missing_skills||[],recommendation:data.recommendation||''});
+    }catch(err){ failed++; out.push({_fn:f.name,_fo:f,_err:err.message,_fail:true,candidate_name:f.name.replace(/\.[^.]+$/,''),category:'Parse error',semantic_score:0,skill_score:0,composite_score:0,matched_skills:[],missing_skills:selectedSkillsList,recommendation:'Error'}); }
   }
-
-  setPipe(3);setProgress(82,'Computing hybrid scores...');await delay(300);
-  setPipe(4);setProgress(94,'Ranking candidates...');await delay(300);
+  setPipe(3); setProgress(82,'Computing scores...'); await delay(300);
+  setPipe(4); setProgress(94,'Ranking...'); await delay(300);
   out.sort((a,b)=>b.composite_score-a.composite_score);
-  results=out;
-  donePipe();setProgress(100,'Screening complete');
-  await delay(500);hideProgress();
-
-  renderResults();updateStats();
-  document.getElementById('export-btn').style.display='flex';
-
-  btn.disabled=false;
-  btn.innerHTML=`<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Re-run Screening`;
-
-  const ok=out.length-failed;
-  if(!failed)toast('s','Screening complete',`${ok} resume${ok>1?'s':''} ranked successfully`);
-  else toast('e',`${failed} file${failed>1?'s':''} failed`,`${ok} succeeded · see console for details`);
+  results=out; donePipe(); setProgress(100,'Complete'); await delay(500); hideProgress();
+  renderResults(); updateStats(); saveData();
+  btn.disabled=false; btn.innerHTML='<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" width="16" height="16"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Re-run Screening';
+  saveScreeningToHistory();
+  if(!failed) toast('s','Screening complete',`${out.length} resume${out.length>1?'s':''} ranked`);
+  else toast('e',`${failed} file${failed>1?'s':''} failed`,`${out.length-failed} succeeded`);
 }
-
 function delay(ms){return new Promise(r=>setTimeout(r,ms));}
 
-// Render results
-function renderResults(){
-  const body=document.getElementById('rbody');
-  document.getElementById('rcount').textContent=results.length?`${results.length} candidate${results.length>1?'s':''}` :'';
-  if(!results.length){
-    body.innerHTML=`<div class="es"><div class="ei"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div><div class="et2">No results</div><div class="esub">Run screening to see ranked candidates.</div></div>`;
-    return;
-  }
-  body.innerHTML=`<div class="rlist" role="list">${results.map((r,i)=>rcHTML(r,i)).join('')}</div>`;
+function renderResults(){ const body=document.getElementById('rbody'); document.getElementById('rcount').textContent=results.length?`${results.length} candidate${results.length>1?'s':''}`:''; if(!results.length){ body.innerHTML='<div class="es"><div class="ei"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0121 9.414V19a2 2 0 01-2 2z"/></svg></div><div class="et2">No results</div><div class="esub">Run screening to see ranked candidates.</div></div>'; return; }
+  body.innerHTML=`<div class="rlist">${results.map((r,i)=>rcHTML(r,i)).join('')}</div>`;
 }
-
-function scClass(s){const p=Math.round(s*100);return p>=65?'rhi':p>=45?'rmd':'rlo';}
-
-function rcHTML(r,i){
-  const pS=Math.round((r.semantic_score||0)*100);
-  const pK=Math.round((r.skill_score||0)*100);
-  const pC=Math.round((r.composite_score||0)*100);
-  const chips=[
-    ...(r.matched_skills||[]).slice(0,4).map(s=>`<span class="chip cmatch">${esc(s)}</span>`),
-    ...(r.missing_skills||[]).slice(0,2).map(s=>`<span class="chip cmiss">${esc(s)}</span>`)
-  ].join('');
-  const errBanner=r._fail?`<div class="errbanner"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Error: ${esc(r._err||'Unknown')}</div>`:'';
-  return `<div class="rc" id="rc${i}" role="listitem" tabindex="0" onclick="sel(${i})" onkeydown="if(event.key==='Enter')sel(${i})" aria-label="Candidate ${esc(r.candidate_name||r._fn)} ranked ${i+1}">
-    ${errBanner}
-    <div class="rc-top">
-      <div style="flex:1;min-width:0">
-        <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px">
-          <span class="rc-rnk">#${i+1}</span>
-          <span class="rc-name">${esc(r.candidate_name||r._fn)}</span>
-        </div>
-        <div class="rc-cat">${esc(r.category||r._fn)}</div>
-      </div>
-      <span class="rsc ${scClass(r.composite_score||0)}">${pC}%</span>
-    </div>
-    <div class="bars">
-      <div class="br"><span class="bl">Semantic</span><div class="bt"><div class="bf s" style="width:${pS}%"></div></div><span class="bv">${pS}</span></div>
-      <div class="br"><span class="bl">Skill</span><div class="bt"><div class="bf sk" style="width:${pK}%"></div></div><span class="bv">${pK}</span></div>
-      <div class="br"><span class="bl">Composite</span><div class="bt"><div class="bf c" style="width:${pC}%"></div></div><span class="bv">${pC}</span></div>
-    </div>
-    ${chips?`<div class="chips">${chips}</div>`:''}
-  </div>`;
-}
-
-function sel(i){
-  if(selIdx!==null)document.getElementById(`rc${selIdx}`)?.classList.remove('sel');
-  selIdx=i;
-  document.getElementById(`rc${i}`)?.classList.add('sel');
-  showDetail(results[i],i+1);
-}
-
-function showDetail(r,rank){
-  document.getElementById('dp').style.display='block';
-  document.getElementById('dpnm').textContent=r.candidate_name||r._fn;
-  document.getElementById('dpct').textContent=r.category||'—';
-  document.getElementById('dprk').textContent=`#${rank}`;
-  setGauge(0,r.semantic_score||0);
-  setGauge(1,r.skill_score||0);
-  setGauge(2,r.composite_score||0);
-  const pS=Math.round((r.semantic_score||0)*100);
-  const pK=Math.round((r.skill_score||0)*100);
-  const pC=Math.round((r.composite_score||0)*100);
-  document.getElementById('dsv').textContent=pS+'%';
-  document.getElementById('dskv').textContent=pK+'%';
-  document.getElementById('dcv').textContent=pC+'%';
-  const thresh=document.getElementById('dthv');
-  if(pC>=65){thresh.textContent='✓ Shortlistable';thresh.style.color='var(--green)';}
-  else{thresh.textContent='✗ Below threshold';thresh.style.color='var(--red)';}
-  document.getElementById('dpsk').innerHTML=[
-    ...(r.matched_skills||[]).map(s=>`<span class="dsk m">${esc(s)}</span>`),
-    ...(r.missing_skills||[]).map(s=>`<span class="dsk x">${esc(s)}</span>`)
-  ].join('')||`<span style="font-size:12px;color:var(--text-3)">No skill data returned by API</span>`;
-}
-
-function setGauge(n,score){
-  const circ=2*Math.PI*28;
-  document.getElementById(`gc${n}`).style.strokeDashoffset=circ-(circ*score);
-  document.getElementById(`gv${n}`).textContent=Math.round(score*100)+'%';
-}
-
-// Stats
-function updateStats(){
-  const n=files.length;
-  document.getElementById('ss').textContent=results.length;
-  document.getElementById('sf').textContent=n?`${n} file${n>1?'s':''} ready`:'No files uploaded';
-  if(!results.length){
-    document.getElementById('sh').textContent='0';
-    document.getElementById('shp').textContent='Threshold: ≥ 65%';
-    document.getElementById('sa').textContent='—';
-    return;
-  }
-  const good=results.filter(r=>!r._fail&&(r.composite_score||0)>=0.65);
-  document.getElementById('sh').textContent=good.length;
-  document.getElementById('shp').textContent=`${Math.round(good.length/results.length*100)}% match rate`;
-  const valids=results.filter(r=>!r._fail);
-  const avg=valids.reduce((s,r)=>s+(r.composite_score||0),0)/Math.max(1,valids.length);
-  document.getElementById('sa').textContent=Math.round(avg*100)+'%';
-}
-
-// Actions
-function actShortlist(){
-  if(selIdx===null)return;
-  const r=results[selIdx];
-  toast('s','Shortlisted',`${r.candidate_name||r._fn} added to shortlist`);
-}
-function actDownload(){
-  if(selIdx===null)return;
-  const r=results[selIdx];
-  if(r._fo){
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(r._fo);
-    a.download=r._fn;a.click();
-    setTimeout(()=>URL.revokeObjectURL(a.href),10000);
-  }else{toast('i','Download unavailable','File object not available in this session');}
-}
-function actReject(){
-  if(selIdx===null)return;
-  const r=results[selIdx];
-  toast('i','Rejected',`${r.candidate_name||r._fn} marked as rejected`);
-}
-
-// CSV export
-function exportCSV(){
-  if(!results.length){toast('e','Nothing to export','Run screening first.');return;}
-  const rows=[['Rank','Candidate Name','Category','Semantic %','Skill %','Composite %','Matched Skills','Missing Skills','Status']];
-  results.forEach((r,i)=>rows.push([
-    i+1,r.candidate_name||r._fn,r.category||'',
-    Math.round((r.semantic_score||0)*100),Math.round((r.skill_score||0)*100),Math.round((r.composite_score||0)*100),
-    (r.matched_skills||[]).join('; '),(r.missing_skills||[]).join('; '),r._fail?'Error':'OK'
-  ]));
-  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
-  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
-  const a=document.createElement('a');a.href=url;a.download=`screening_${new Date().toISOString().slice(0,10)}.csv`;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),10000);
-  toast('s','CSV exported',`${results.length} records saved`);
-}
-
-// Toast
-const ICONS={
-  s:`<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
-  e:`<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
-  i:`<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
-};
-const TC={s:'ts',e:'te',i:'ti'};
-function toast(type,title,msg){
-  const el=document.createElement('div');
-  el.className=`toast ${TC[type]||'ti'}`;
-  el.innerHTML=`<div class="tic">${ICONS[type]||ICONS.i}</div><div class="tt"><div class="ttl">${esc(title)}</div><div class="tmg">${esc(msg||'')}</div></div>`;
-  document.getElementById('toasts').appendChild(el);
-  setTimeout(()=>{el.style.animation='tOut .25s ease forwards';setTimeout(()=>el.remove(),260);},4500);
-}
-
+function scClass(s){const p=Math.round(s*100); return p>=65?'rhi':p>=45?'rmd':'rlo';}
+function rcHTML(r,i){ const pS=Math.round((r.semantic_score||0)*100); const pK=Math.round((r.skill_score||0)*100); const pC=Math.round((r.composite_score||0)*100); const chips=[...(r.matched_skills||[]).slice(0,4).map(s=>`<span class="chip cmatch">${esc(s)}</span>`),...(r.missing_skills||[]).slice(0,2).map(s=>`<span class="chip cmiss">${esc(s)}</span>`)].join(''); const errBanner=r._fail?`<div class="errbanner"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Error: ${esc(r._err||'Unknown')}</div>`:''; return `<div class="rc" id="rc${i}" onclick="sel(${i})">${errBanner}<div class="rc-top"><div><div style="display:flex;align-items:center;gap:7px"><span class="rc-rnk">#${i+1}</span><span class="rc-name">${esc(r.candidate_name||r._fn)}</span></div><div class="rc-cat">${esc(r.category||r._fn)}</div></div><span class="rsc ${scClass(r.composite_score||0)}">${pC}%</span></div><div class="bars"><div class="br"><span class="bl">Semantic</span><div class="bt"><div class="bf s" style="width:${pS}%"></div></div><span class="bv">${pS}</span></div><div class="br"><span class="bl">Skill</span><div class="bt"><div class="bf sk" style="width:${pK}%"></div></div><span class="bv">${pK}</span></div><div class="br"><span class="bl">Composite</span><div class="bt"><div class="bf c" style="width:${pC}%"></div></div><span class="bv">${pC}</span></div></div>${chips?`<div class="chips">${chips}</div>`:''}</div>`; }
+function sel(i){ if(selIdx!==null)document.getElementById(`rc${selIdx}`)?.classList.remove('sel'); selIdx=i; document.getElementById(`rc${i}`)?.classList.add('sel'); showDetail(results[i],i+1); }
+function showDetail(r,rank){ document.getElementById('dp').style.display='block'; document.getElementById('dpnm').textContent=r.candidate_name||r._fn; document.getElementById('dpct').textContent=r.category||'—'; document.getElementById('dprk').textContent=`#${rank}`; setGauge(0,r.semantic_score||0); setGauge(1,r.skill_score||0); setGauge(2,r.composite_score||0); const pS=Math.round((r.semantic_score||0)*100); const pK=Math.round((r.skill_score||0)*100); const pC=Math.round((r.composite_score||0)*100); document.getElementById('dsv').textContent=pS+'%'; document.getElementById('dskv').textContent=pK+'%'; document.getElementById('dcv').textContent=pC+'%'; const thresh=document.getElementById('dthv'); if(pC>=65){ thresh.textContent='Shortlistable'; thresh.style.color='var(--green)'; } else { thresh.textContent='Below threshold'; thresh.style.color='var(--red)'; } document.getElementById('dpsk').innerHTML=[...(r.matched_skills||[]).map(s=>`<span class="dsk m">${esc(s)}</span>`),...(r.missing_skills||[]).map(s=>`<span class="dsk x">${esc(s)}</span>`)].join('')||'No skill data'; }
+function setGauge(n,score){ const circ=2*Math.PI*28; const gc=document.getElementById(`gc${n}`); if(gc)gc.style.strokeDashoffset=circ-(circ*score); const gv=document.getElementById(`gv${n}`); if(gv)gv.textContent=Math.round(score*100)+'%'; }
+function updateStats(){ const n=files.length; document.getElementById('ss').textContent=results.length; document.getElementById('sf').textContent=n?`${n} file${n>1?'s':''} ready`:'No files'; if(!results.length){ document.getElementById('sh').textContent='0'; document.getElementById('shp').textContent='Threshold: ≥ 65%'; document.getElementById('sa').textContent='—'; return; } const good=results.filter(r=>!r._fail&&(r.composite_score||0)>=0.65); document.getElementById('sh').textContent=good.length; document.getElementById('shp').textContent=`${Math.round(good.length/results.length*100)}% match rate`; const valids=results.filter(r=>!r._fail); const avg=valids.reduce((s,r)=>s+(r.composite_score||0),0)/Math.max(1,valids.length); document.getElementById('sa').textContent=Math.round(avg*100)+'%'; }
+function actShortlist(){ if(selIdx!==null){ toast('s','Shortlisted',`${results[selIdx].candidate_name||results[selIdx]._fn} shortlisted`); let shortlisted=JSON.parse(localStorage.getItem('resumeIQ_shortlisted')||'[]'); if(!shortlisted.find(s=>s.name===results[selIdx]._fn)){ shortlisted.push(results[selIdx]); localStorage.setItem('resumeIQ_shortlisted',JSON.stringify(shortlisted)); updateStats(); renderShortlisted(); } } }
+function actDownload(){ if(selIdx===null)return; const r=results[selIdx]; if(r._fo){ const a=document.createElement('a'); a.href=URL.createObjectURL(r._fo); a.download=r._fn; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),10000); }else{ toast('i','Download unavailable',''); } }
+function actReject(){ if(selIdx!==null) toast('i','Rejected',`${results[selIdx].candidate_name||results[selIdx]._fn} rejected`); }
+function exportCSV(){ if(!results.length){ toast('e','Nothing to export','Run screening first.'); return; } const rows=[['Rank','Candidate Name','Category','Semantic %','Skill %','Composite %','Matched Skills','Missing Skills','Status']]; results.forEach((r,i)=>rows.push([i+1,r.candidate_name||r._fn,r.category||'',Math.round((r.semantic_score||0)*100),Math.round((r.skill_score||0)*100),Math.round((r.composite_score||0)*100),(r.matched_skills||[]).join('; '),(r.missing_skills||[]).join('; '),r._fail?'Error':'OK'])); const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n'); const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); const a=document.createElement('a'); a.href=url; a.download=`screening_${new Date().toISOString().slice(0,10)}.csv`; a.click(); setTimeout(()=>URL.revokeObjectURL(url),10000); toast('s','CSV exported',`${results.length} records`); }
+function updateAnalytics(){ document.getElementById('analyticsTotal').innerText=results.length; const shortlisted=JSON.parse(localStorage.getItem('resumeIQ_shortlisted')||'[]'); document.getElementById('analyticsRate').innerText=results.length?Math.round(shortlisted.length/results.length*100)+'%':'0%'; const avg=results.length?Math.round(results.reduce((s,r)=>s+(r.composite_score||0),0)/results.length*100):0; document.getElementById('analyticsAvg').innerText=avg?`${avg}%`:'—'; const allSkills=new Set(); results.forEach(r=>{(r.matched_skills||[]).forEach(s=>allSkills.add(s));(r.missing_skills||[]).forEach(s=>allSkills.add(s));}); document.getElementById('analyticsSkills').innerText=allSkills.size; const skillCount=new Map(); results.forEach(r=>{(r.matched_skills||[]).forEach(s=>skillCount.set(s,(skillCount.get(s)||0)+1));}); const topSkills=Array.from(skillCount.entries()).sort((a,b)=>b[1]-a[1]).slice(0,10); document.getElementById('topSkillsList').innerHTML=topSkills.map(([s,c])=>`<span class="stag on">${s} (${c})</span>`).join('')||'<span>No skills data yet</span>'; const history=JSON.parse(localStorage.getItem('resumeIQ_history')||'[]'); document.getElementById('historyList').innerHTML=history.slice().reverse().slice(0,20).map(h=>`<div style="padding:10px;border-bottom:1px solid var(--border);"><strong>${h.date}</strong><br>${h.total} resumes, ${h.shortlisted} shortlisted, avg ${h.avgMatch}%</div>`).join('')||'<span>No history yet</span>'; }
+function saveScreeningToHistory(){ const history=JSON.parse(localStorage.getItem('resumeIQ_history')||'[]'); const total=results.length; const shortlisted=JSON.parse(localStorage.getItem('resumeIQ_shortlisted')||'[]').length; const avgMatch=results.length?Math.round(results.reduce((s,r)=>s+(r.composite_score||0),0)/results.length*100):0; history.push({date:new Date().toLocaleString(),total,shortlisted,avgMatch}); if(history.length>50)history.shift(); localStorage.setItem('resumeIQ_history',JSON.stringify(history)); }
+function renderShortlisted(){ const shortlisted=JSON.parse(localStorage.getItem('resumeIQ_shortlisted')||'[]'); const container=document.getElementById('shortlistContainer'); if(!shortlisted.length){ container.innerHTML='<div class="es"><div class="et2">No shortlisted candidates</div><div class="esub">Shortlist candidates from Screening tab.</div></div>'; return; } container.innerHTML=shortlisted.map((c,i)=>`<div class="rc" style="margin-bottom:10px;"><div class="rc-top"><span class="rc-rnk">#${i+1}</span><span class="rc-name">${esc(c.candidate_name||c.name||c._fn)}</span><span class="rsc ${c.composite_score>=0.65?'rhi':c.composite_score>=0.45?'rmd':'rlo'}">${Math.round((c.composite_score||0)*100)}%</span></div><div class="bars"><div class="br"><span class="bl">Composite</span><div class="bt"><div class="bf c" style="width:${Math.round((c.composite_score||0)*100)}%"></div></div><span class="bv">${Math.round((c.composite_score||0)*100)}%</span></div></div><div class="chips">${(c.matched_skills||[]).slice(0,5).map(s=>`<span class="chip cmatch">${esc(s)}</span>`).join('')}</div></div>`).join(''); }
+function updateAPI(){ const newApi=document.getElementById('apiEndpoint').value; localStorage.setItem('resumeIQ_api',newApi); API=newApi; document.getElementById('apiTestResult').innerHTML='<span style="color:var(--green);">API endpoint updated. Reload page to apply fully.</span>'; checkAPI(); }
+function saveDefaultWeights(){ const sem=document.getElementById('defaultSemWeight').value; const skill=document.getElementById('defaultSkillWeight').value; localStorage.setItem('resumeIQ_semWeight',sem); localStorage.setItem('resumeIQ_skillWeight',skill); document.getElementById('apiTestResult').innerHTML='<span style="color:var(--green);">Default weights saved.</span>'; }
+function saveThreshold(){ const threshold=document.getElementById('thresholdValue').value; localStorage.setItem('resumeIQ_threshold',threshold); document.getElementById('apiTestResult').innerHTML='<span style="color:var(--green);">Threshold saved.</span>'; }
+function exportAllData(){ const data={results:results,shortlisted:JSON.parse(localStorage.getItem('resumeIQ_shortlisted')||'[]'),skills:skills,settings:{api:localStorage.getItem('resumeIQ_api'),semWeight:localStorage.getItem('resumeIQ_semWeight'),skillWeight:localStorage.getItem('resumeIQ_skillWeight'),threshold:localStorage.getItem('resumeIQ_threshold')}}; const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`resumeiq_export_${new Date().toISOString().slice(0,19)}.json`; a.click(); URL.revokeObjectURL(url); toast('s','Export complete','All data exported as JSON'); }
+function clearAllData(){ if(confirm('Delete all screening results, shortlisted candidates, and settings?')){ localStorage.clear(); location.reload(); } }
+function loadSettings(){ const savedApi=localStorage.getItem('resumeIQ_api'); if(savedApi) document.getElementById('apiEndpoint').value=savedApi; const savedSem=localStorage.getItem('resumeIQ_semWeight'); if(savedSem) document.getElementById('defaultSemWeight').value=savedSem; const savedSkill=localStorage.getItem('resumeIQ_skillWeight'); if(savedSkill) document.getElementById('defaultSkillWeight').value=savedSkill; const savedThreshold=localStorage.getItem('resumeIQ_threshold'); if(savedThreshold) document.getElementById('thresholdValue').value=savedThreshold; }
+const ICONS={s:'<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',e:'<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',i:'<svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>'};
+function toast(type,title,msg){ const el=document.createElement('div'); el.className=`toast ts`; if(type==='e')el.className='toast te'; else if(type==='i')el.className='toast ti'; else el.className='toast ts'; el.innerHTML=`<div class="tic">${ICONS[type]||ICONS.i}</div><div class="tt"><div class="ttl">${esc(title)}</div><div class="tmg">${esc(msg||'')}</div></div>`; document.getElementById('toasts').appendChild(el); setTimeout(()=>{el.style.animation='tOut .25s ease forwards';setTimeout(()=>el.remove(),260);},4500); }
 function esc(s){if(typeof s!=='string')return String(s||'');return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+loadSavedData();
 </script>
 </body>
 </html>
