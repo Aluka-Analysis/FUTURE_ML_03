@@ -334,10 +334,6 @@ This system is designed as a decision support tool, not a decision maker. Key et
 Aluka Precious Oluchukwu
 Machine Learning Engineer
 
-Background: Philosophy → Machine Learning
-Intern at: Feature Intense
-Track: Future Interns ML Track
-
 LinkedIn: https://www.linkedin.com/in/aluka-precious-b222a2356
 GitHub: https://github.com/Aluka-Analysis
 Email: alukaprecious4@gmail.com
