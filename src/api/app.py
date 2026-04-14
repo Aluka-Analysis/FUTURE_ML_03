@@ -68,7 +68,6 @@ class SkillExtractor:
         skills = set()
         text_lower = text.lower()
         
-        # Method 1: Extract phrases after skill indicators
         skill_indicators = [
             'experience in', 'knowledge of', 'proficient in', 'skilled in',
             'expertise in', 'familiar with', 'strong', 'hands-on', 'competent in',
@@ -81,30 +80,24 @@ class SkillExtractor:
             if indicator in text_lower:
                 parts = text_lower.split(indicator)
                 for part in parts[1:]:
-                    # Extract up to next period or comma
                     end_chars = ['.', ',', ';', 'and', 'or']
                     extracted = part
                     for end in end_chars:
                         if end in extracted:
                             extracted = extracted.split(end)[0]
                             break
-                    # Split into potential skills
                     potential = re.split(r',|\sand\s', extracted[:100])
                     for skill in potential[:5]:
                         cleaned = skill.strip()
                         if 3 <= len(cleaned) <= 30 and cleaned not in stop_words:
                             skills.add(cleaned)
         
-        # Method 2: Extract noun phrases that are likely skills
         for chunk in doc.noun_chunks:
             chunk_text = chunk.text.strip()
-            # Filter by length and exclude common words
             if 3 <= len(chunk_text) <= 30 and chunk_text not in stop_words:
-                # Check if chunk contains skill-related words
                 if any(word in chunk_text for word in ['experience', 'knowledge', 'skill', 'proficient', 'expert']):
                     skills.add(chunk_text)
         
-        # Method 3: Extract technical terms using TF-IDF
         try:
             vectorizer = TfidfVectorizer(ngram_range=(1, 2), stop_words='english', max_features=20)
             tfidf_matrix = vectorizer.fit_transform([text_lower])
@@ -118,13 +111,11 @@ class SkillExtractor:
         except:
             pass
         
-        # Method 4: Extract capitalized terms (potential proper skills)
         capitalized = re.findall(r'\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b', text)
         for cap in capitalized[:10]:
             if 3 <= len(cap) <= 30:
                 skills.add(cap.lower())
         
-        # Clean up skills
         stopwords_list = {'the', 'a', 'an', 'and', 'or', 'of', 'to', 'in', 'for', 'on', 'with', 
                           'by', 'at', 'from', 'as', 'is', 'was', 'are', 'were', 'be', 'been', 
                           'have', 'has', 'had', 'do', 'does', 'did', 'but', 'so', 'if', 'then', 
@@ -132,9 +123,8 @@ class SkillExtractor:
         
         filtered_skills = [s for s in skills if s not in stopwords_list and len(s) > 2]
         
-        return list(set(filtered_skills))[:15]  # Return top 15 unique skills
+        return list(set(filtered_skills))[:15]
 
-# Initialize skill extractor
 skill_extractor = SkillExtractor()
 
 # ============================================================
@@ -257,7 +247,7 @@ def process_resume_text(job_description, resume_text, semantic_weight=0.7, skill
 # FASTAPI APP
 # ============================================================
 
-app = FastAPI(title="Resume Screening API", version="3.0.0")
+app = FastAPI(title="Resume Screening API", version="3.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -269,14 +259,14 @@ app.add_middleware(
 
 @app.get("/")
 def root():
-    return {"message": "Resume Screening API", "version": "3.0.0"}
+    return {"message": "Resume Screening API", "version": "3.1.0"}
 
 @app.get("/health")
 def health():
     return {"status": "healthy", "model_loaded": True}
 
 # ============================================================
-# FORMDATA ENDPOINT (With Auto Skill Extraction)
+# FORMDATA ENDPOINT (With Job Title Support)
 # ============================================================
 
 @app.post("/screen-form")
@@ -285,11 +275,13 @@ async def screen_form(
     job_description: str = Form(...),
     semantic_weight: float = Form(0.7),
     skill_weight: float = Form(0.3),
-    required_skills: str = Form("[]")
+    required_skills: str = Form("[]"),
+    job_title: str = Form("")
 ):
     """
     Screen a single resume using FormData.
     Auto-extracts skills from job description if none provided.
+    Now accepts and returns job_title for better organization.
     """
     try:
         # Parse required skills from frontend
@@ -307,7 +299,7 @@ async def screen_form(
         for skill in frontend_skills:
             skill_lower = skill.lower()
             skill_patterns[skill_lower] = r'\b' + re.escape(skill_lower) + r'\b'
-            skill_weights[skill_lower] = 2  # Default weight
+            skill_weights[skill_lower] = 2
         
         # Read the raw file bytes
         content = await file.read()
@@ -342,6 +334,7 @@ async def screen_form(
             "recommendation": result["recommendation"],
             "candidate_name": candidate_name,
             "category": "Extracted from resume",
+            "job_title": job_title if job_title else "Untitled Position",
             "extracted_skills_from_jd": frontend_skills if not json.loads(required_skills) else []
         }
         
@@ -351,7 +344,7 @@ async def screen_form(
         raise HTTPException(status_code=500, detail=str(e))
 
 # ============================================================
-# BATCH ENDPOINT
+# BATCH ENDPOINT (With Job Title Support)
 # ============================================================
 
 @app.post("/screen-form-batch")
@@ -360,7 +353,8 @@ async def screen_form_batch(
     job_description: str = Form(...),
     semantic_weight: float = Form(0.7),
     skill_weight: float = Form(0.3),
-    required_skills: str = Form("[]")
+    required_skills: str = Form("[]"),
+    job_title: str = Form("")
 ):
     try:
         frontend_skills = json.loads(required_skills)
@@ -425,6 +419,7 @@ async def screen_form_batch(
         return {
             "total_candidates": len(results),
             "ranked_candidates": results,
+            "job_title": job_title if job_title else "Untitled Position",
             "extracted_skills_from_jd": frontend_skills if not json.loads(required_skills) else []
         }
         

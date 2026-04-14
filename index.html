@@ -273,8 +273,15 @@ nav{flex:1;padding:14px 12px;overflow-y:auto;}
           <div class="panel"><div class="ph"><span class="pt"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>Resume Upload</span><button class="pa" onclick="clearFiles()">Clear all</button></div>
             <div class="pb"><div class="dz" id="dz"><input type="file" id="finput" accept=".pdf,.docx,.txt" multiple onchange="addFiles(this.files)"/><div class="dz-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg></div><div class="dz-title">Drop resumes here</div><div class="dz-sub">or click to browse — PDF, DOCX, TXT</div><div class="dz-types"><span class="tc">PDF</span><span class="tc">DOCX</span><span class="tc">TXT</span></div></div><div class="file-list" id="flist"></div></div></div>
 
-          <div class="panel"><div class="ph"><span class="pt"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Job Description</span></div>
-            <div class="pb"><div class="fl">Full job description</div><textarea class="ta" id="jd" placeholder="Paste job description here..." maxlength="5000" oninput="document.getElementById('cc').textContent=this.value.length"></textarea><div class="cc"><span id="cc">0</span> / 5000</div>
+          <div class="panel"><div class="ph"><span class="pt"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>Job Details</span></div>
+            <div class="pb">
+              <div class="fl">Job Title</div>
+              <input type="text" id="jobTitle" class="ta" style="min-height: auto; margin-bottom: 12px;" placeholder="e.g., Senior Data Scientist, HR Manager, Software Engineer">
+              
+              <div class="fl">Full Job Description</div>
+              <textarea class="ta" id="jd" placeholder="Paste job description here..." maxlength="5000" oninput="document.getElementById('cc').textContent=this.value.length"></textarea>
+              <div class="cc"><span id="cc">0</span> / 5000</div>
+              
               <div style="margin-top:16px;"><div class="fl">Required skills (click to toggle on/off)</div><div class="stags" id="stags"></div><div class="skill-input-group"><input type="text" id="newSkillInput" placeholder="Add any skill (e.g., Recruitment, SEO, Payroll)"><button class="skill-add-btn" onclick="addSkill()">Add Skill</button></div><div class="skill-note">Tip: Add skills for ANY job category. If none selected, system auto-extracts from job description.</div></div>
               <div class="wrow"><div class="wb"><label for="ws">Semantic weight</label><input class="wi" id="ws" type="number" min="0" max="100" value="70"/><div class="ws">% of composite score</div></div><div class="wb"><label for="wk">Skill weight</label><input class="wi" id="wk" type="number" min="0" max="100" value="30"/><div class="ws">% of composite score</div></div></div>
               <div class="pw" id="pw"><div class="pt2"><div class="pf" id="pf"></div></div><div class="pm"><span class="plbl" id="plbl">Initializing...</span><span class="ppct" id="ppct">0%</span></div></div>
@@ -401,7 +408,8 @@ function setProgress(pct,lbl){ const w=document.getElementById('pw'); if(w)w.cla
 function hideProgress(){ const w=document.getElementById('pw'); if(w)w.classList.remove('show'); }
 
 async function runScreening(){
-  const jd=document.getElementById('jd').value.trim();
+  const jobTitle = document.getElementById('jobTitle').value.trim();
+  const jd = document.getElementById('jd').value.trim();
   if(!files.length){ toast('e','No files','Upload resumes'); return; }
   if(!jd){ toast('e','No job description','Paste job description'); return; }
   const wSem=parseInt(document.getElementById('ws').value)||70;
@@ -414,6 +422,7 @@ async function runScreening(){
     const f=files[i]; const pct=5+((i/files.length)*75); setProgress(pct,`Processing ${i+1}/${files.length}: ${f.name}`);
     if(i===0)setPipe(1); if(i===Math.floor(files.length/2))setPipe(2);
     const fd=new FormData(); fd.append('file',f); fd.append('job_description',jd); fd.append('semantic_weight',(wSem/100).toString()); fd.append('skill_weight',(wSk/100).toString()); fd.append('required_skills',JSON.stringify(selectedSkillsList));
+    if(jobTitle) fd.append('job_title',jobTitle);
     try{
       const resp=await fetch(`${API}/screen-form`,{method:'POST',body:fd,signal:AbortSignal.timeout(30000)});
       if(!resp.ok)throw new Error(`HTTP ${resp.status}`);
@@ -453,7 +462,6 @@ function rcHTML(r, i) {
   const recColor = r.composite_score >= 0.7 ? 'var(--green)' : r.composite_score >= 0.5 ? 'var(--amber)' : 'var(--red)';
   const recHtml = r.recommendation ? `<div style="margin-top: 10px; padding: 8px; background: var(--surface-3); border-radius: 6px; font-size: 12px; color: var(--text-2); border-left: 3px solid ${recColor};">📋 ${esc(r.recommendation)}</div>` : '';
   
-  // Skills display
   const matchedHtml = r.matched_skills && r.matched_skills.length > 0 ? 
     `<div style="margin-top: 8px;"><strong style="color: var(--green);">Matched Skills:</strong> ${r.matched_skills.join(', ')}</div>` : 
     `<div style="margin-top: 8px;"><strong style="color: var(--red);">Matched Skills:</strong> None</div>`;
@@ -510,7 +518,6 @@ function showDetail(r, rank) {
   if (pC >= 65) { thresh.textContent = 'Shortlistable'; thresh.style.color = 'var(--green)'; }
   else { thresh.textContent = 'Below threshold'; thresh.style.color = 'var(--red)'; }
   
-  // Skills display in detail panel
   const matchedHtml = r.matched_skills && r.matched_skills.length > 0 ? 
     r.matched_skills.map(s => `<span class="dsk m">${esc(s)}</span>`).join('') : 
     '<span style="color: var(--red);">None</span>';
